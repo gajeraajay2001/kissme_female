@@ -134,13 +134,13 @@ class Spacing {
 
   static Widget height(double height) {
     return SizedBox(
-      height: height,
+      height: MySize.getHeight(height),
     );
   }
 
   static Widget width(double width) {
     return SizedBox(
-      width: width,
+      width: MySize.getWidth(width),
     );
   }
 }

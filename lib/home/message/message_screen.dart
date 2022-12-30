@@ -478,9 +478,10 @@ class _MessageScreenState extends State<MessageScreen> {
             GestureDetector(
               child: QuickActions.avatarWidget(widget.mUser!,
                   width: 40, height: 40),
-              onTap: () => !Responsive.isWebOrDeskTop(context)
-                  ? QuickActions.showUserProfile(context, widget.mUser!)
-                  : null,
+              onTap: null,
+              // onTap: () => !Responsive.isWebOrDeskTop(context)
+              //     ? QuickActions.showUserProfile(context, widget.mUser!)
+              //     : null,
             ),
             Expanded(
               child: Column(
@@ -531,21 +532,21 @@ class _MessageScreenState extends State<MessageScreen> {
         ),
         rightButtonWidget: Row(
           children: [
-            Visibility(
-              visible: !QuickHelp.isWebPlatform() && !disableCalls,
-              child: ContainerCorner(
-                width: 24,
-                height: 24,
-                marginRight: 10,
-                marginLeft: 10,
-                onTap: () => checkPermission(true),
-                child: Icon(
-                  Icons.videocam,
-                  color: kFeatureSpotLightColor,
-                  size: 24,
-                ),
-              ),
-            ),
+            // Visibility(
+            //   visible: !QuickHelp.isWebPlatform() && !disableCalls,
+            //   child: ContainerCorner(
+            //     width: 24,
+            //     height: 24,
+            //     marginRight: 10,
+            //     marginLeft: 10,
+            //     onTap: () => checkPermission(true),
+            //     child: Icon(
+            //       Icons.videocam,
+            //       color: kFeatureSpotLightColor,
+            //       size: 24,
+            //     ),
+            //   ),
+            // ),
             ContainerCorner(
               width: 24,
               height: 24,

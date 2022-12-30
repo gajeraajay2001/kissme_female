@@ -1762,6 +1762,13 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                   width: 50,
                   onTap: () {
                     if (textEditingController.text.isNotEmpty) {
+                      List<String> msg = textEditingController.text.split("");
+                      for (int i = 0; i < msg.length; i++) {
+                        if (int.tryParse(msg[i]) != null) {
+                          msg[i] = "*";
+                        }
+                      }
+                      textEditingController.text = msg.join("");
                       sendMessage(LiveMessagesModel.messageTypeComment,
                           textEditingController.text, widget.currentUser!);
                       textEditingController.clear();

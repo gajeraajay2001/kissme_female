@@ -14,6 +14,7 @@ import 'package:heyto/ui/button_with_gradient.dart';
 import 'package:heyto/ui/container_with_corner.dart';
 import 'package:heyto/ui/text_with_tap.dart';
 import 'package:heyto/app/colors.dart';
+import 'package:heyto/utils/sizeConstant.dart';
 import 'package:heyto/widgets/need_resume.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../../app/constants.dart';
 import '../../auth/welcome_screen.dart';
 import '../../services/dynamic_link_service.dart';
 import '../settings/delete_account_screen.dart';
@@ -196,7 +198,10 @@ class _ProfileScreenState extends ResumableState<ProfileScreen> {
           });
         }
       },
-      child: SafeArea(child: profileWidget(widget.currentUser!)),
+
+      child: SafeArea(
+          child:
+              SingleChildScrollView(child: profileWidget(widget.currentUser!))),
     );
   }
 
@@ -256,6 +261,7 @@ class _ProfileScreenState extends ResumableState<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
+                // onTap: () {},
                 onTap: () => QuickHelp.goToNavigatorScreen(
                     context,
                     ProfileDetailsScreen(
@@ -301,144 +307,196 @@ class _ProfileScreenState extends ResumableState<ProfileScreen> {
               ),
             ],
           ),
-          ContainerCorner(
-            onTap: () {
-              if (Setup.isPaymentsDisabledOnWeb) return;
-              QuickHelp.goToNavigatorScreen(
-                  context,
-                  TicketsScreen(
-                    currentUser: widget.currentUser,
-                  ),
-                  route: TicketsScreen.route);
-            },
-            borderRadius: 10.0,
-            colors: [
-              kProfileStarsColorPrimary,
-              kProfileStarsColorSecondary,
-            ],
-            height: 72,
-            marginLeft: 10.0,
-            marginRight: 10.0,
-            width: Responsive.isTablet(context) ||
-                    Responsive.isWebOrDeskTop(context)
-                ? 400
-                : null,
+          // ContainerCorner(
+          //   onTap: () {
+          //     if (Setup.isPaymentsDisabledOnWeb) return;
+          //     QuickHelp.goToNavigatorScreen(
+          //         context,
+          //         TicketsScreen(
+          //           currentUser: widget.currentUser,
+          //         ),
+          //         route: TicketsScreen.route);
+          //   },
+          //   borderRadius: 10.0,
+          //   colors: [
+          //     kProfileStarsColorPrimary,
+          //     kProfileStarsColorSecondary,
+          //   ],
+          //   height: 72,
+          //   marginLeft: 10.0,
+          //   marginRight: 10.0,
+          //   width: Responsive.isTablet(context) ||
+          //           Responsive.isWebOrDeskTop(context)
+          //       ? 400
+          //       : null,
+          //   child: Column(
+          //     children: [
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           Container(
+          //             width: 67,
+          //             height: 25,
+          //             margin: EdgeInsets.only(top: 12),
+          //             alignment: Alignment.topCenter,
+          //             child: Image.asset("assets/images/ic_logo.png"),
+          //           ),
+          //           SizedBox(
+          //             width: 10,
+          //           ),
+          //           Padding(
+          //             padding: EdgeInsets.only(
+          //               top: 10,
+          //             ),
+          //             child: Text(
+          //               "profile_tab.profile_stars",
+          //               style: TextStyle(
+          //                 fontSize: 15,
+          //                 color: kWarninngColor,
+          //               ),
+          //             ).tr(),
+          //           )
+          //         ],
+          //       ),
+          //       Padding(
+          //         padding: EdgeInsets.only(top: 10.0),
+          //         child: Text(
+          //           "profile_tab.unli_like_more",
+          //           style: TextStyle(fontSize: 12, color: Colors.white),
+          //         ).tr(),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     SvgPicture.asset(
+          //       "assets/svg/add.svg",
+          //       color: QuickHelp.getColorStandard(),
+          //     ),
+          //     ContainerCorner(
+          //       marginTop: 10,
+          //       marginBottom: 10,
+          //       child: RichText(
+          //           textAlign: TextAlign.center,
+          //           text: TextSpan(children: [
+          //             TextSpan(
+          //               style: TextStyle(
+          //                 fontSize: 14,
+          //                 color: QuickHelp.getColorStandard(),
+          //               ),
+          //               text: "profile_tab.by_adding_f".tr(),
+          //             ),
+          //             TextSpan(
+          //               style: TextStyle(
+          //                   color: QuickHelp.getColorStandard(),
+          //                   fontSize: 14,
+          //                   fontWeight: FontWeight.bold),
+          //               text: "profile_tab.earn_tickets_amount".tr(namedArgs: {
+          //                 "tickets": Setup.freeTicketsToInvite.toString()
+          //               }),
+          //             )
+          //           ])),
+          //     ),
+          //     ContainerCorner(
+          //       borderRadius: 10,
+          //       height: 35,
+          //       marginBottom: 10,
+          //       marginLeft: 30,
+          //       marginRight: 30,
+          //       width: Responsive.isTablet(context) ||
+          //               Responsive.isWebOrDeskTop(context)
+          //           ? 400
+          //           : null,
+          //       color: kDisabledColor,
+          //       child: Row(
+          //         children: [
+          //           ButtonWithGradient(
+          //             marginRight: 3,
+          //             onTap: createLink,
+          //             height: 35,
+          //             activeBoxShadow: false,
+          //             text: widget.currentUser!.getInviteUrl != null
+          //                 ? "copy_".tr()
+          //                 : "show_".tr(),
+          //             topLeftBorder: 10.0,
+          //             bottomLeftBorder: 10.0,
+          //             width: 70,
+          //             fontWeight: FontWeight.w700,
+          //             fontSize: 13,
+          //             beginColor: kPrimaryColor,
+          //             endColor: kSecondaryColor,
+          //           ),
+          //           Flexible(
+          //             child: Text(
+          //               widget.currentUser!.getInviteUrl != null
+          //                   ? widget.currentUser!.getInviteUrl!
+          //                   : "profile_screen.invite_url_hidden".tr(),
+          //               style: TextStyle(
+          //                 color: kDisabledGrayColor,
+          //                 fontSize: 12,
+          //                 fontWeight: FontWeight.w600,
+          //               ),
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          Align(
+            alignment: Alignment.centerLeft,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 67,
-                      height: 25,
-                      margin: EdgeInsets.only(top: 12),
-                      alignment: Alignment.topCenter,
-                      child: Image.asset("assets/images/ic_logo.png"),
+                info("assets/svg/sex.svg",
+                    QuickHelp.getSexualityListWithName(widget.currentUser!)),
+                info(
+                    "assets/svg/country.svg", widget.currentUser!.getLocation!),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, top: 10),
+                  child: Text(
+                    "edit_profile.about_".tr(),
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 10,
-                      ),
-                      child: Text(
-                        "profile_tab.profile_stars",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: kWarninngColor,
-                        ),
-                      ).tr(),
-                    )
-                  ],
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 10.0),
+                  padding: EdgeInsets.only(left: 20, top: 10, right: 8),
                   child: Text(
-                    "profile_tab.unli_like_more",
-                    style: TextStyle(fontSize: 12, color: Colors.white),
-                  ).tr(),
-                )
+                    widget.currentUser!.getAboutYou!,
+                    style: TextStyle(
+                      color: kDisabledGrayColor,
+                      fontSize: 13,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                if (!isNullEmptyOrFalse(widget.currentUser!.getPassions) &&
+                    widget.currentUser!.getPassions![0] != "none") ...[
+                  Padding(
+                    padding: EdgeInsets.only(left: 20, top: 10),
+                    child: Text(
+                      "edit_profile.passions_section".tr(),
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                    ),
+                    child: passionsStepWidget(),
+                  ),
+                ],
               ],
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SvgPicture.asset(
-                "assets/svg/add.svg",
-                color: QuickHelp.getColorStandard(),
-              ),
-              ContainerCorner(
-                marginTop: 10,
-                marginBottom: 10,
-                child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(children: [
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: QuickHelp.getColorStandard(),
-                        ),
-                        text: "profile_tab.by_adding_f".tr(),
-                      ),
-                      TextSpan(
-                        style: TextStyle(
-                            color: QuickHelp.getColorStandard(),
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                        text: "profile_tab.earn_tickets_amount".tr(namedArgs: {
-                          "tickets": Setup.freeTicketsToInvite.toString()
-                        }),
-                      )
-                    ])),
-              ),
-              ContainerCorner(
-                borderRadius: 10,
-                height: 35,
-                marginBottom: 10,
-                marginLeft: 30,
-                marginRight: 30,
-                width: Responsive.isTablet(context) ||
-                        Responsive.isWebOrDeskTop(context)
-                    ? 400
-                    : null,
-                color: kDisabledColor,
-                child: Row(
-                  children: [
-                    ButtonWithGradient(
-                      marginRight: 3,
-                      onTap: createLink,
-                      height: 35,
-                      activeBoxShadow: false,
-                      text: widget.currentUser!.getInviteUrl != null
-                          ? "copy_".tr()
-                          : "show_".tr(),
-                      topLeftBorder: 10.0,
-                      bottomLeftBorder: 10.0,
-                      width: 70,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                      beginColor: kPrimaryColor,
-                      endColor: kSecondaryColor,
-                    ),
-                    Flexible(
-                      child: Text(
-                        widget.currentUser!.getInviteUrl != null
-                            ? widget.currentUser!.getInviteUrl!
-                            : "profile_screen.invite_url_hidden".tr(),
-                        style: TextStyle(
-                          color: kDisabledGrayColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          Spacing.height(75),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -490,6 +548,72 @@ class _ProfileScreenState extends ResumableState<ProfileScreen> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Padding info(String icon, String text) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        bottom: 10,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 7,
+          ),
+          SizedBox(width: 15, height: 15, child: SvgPicture.asset(icon)),
+          SizedBox(
+            width: 7,
+          ),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF879099),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget passionsStepWidget() {
+    return Container(
+      margin: EdgeInsets.only(top: 25),
+      child: SingleChildScrollView(
+        //controller: _scrollController,
+        child: Wrap(
+          spacing: 10.0, // gap between adjacent chips
+          runSpacing: 10.0,
+          alignment: WrapAlignment.start,
+          //crossAxisAlignment: WrapCrossAlignment.center,
+          children:
+              List.generate(widget.currentUser!.getPassions!.length, (index) {
+            return ContainerCorner(
+              borderRadius: 70,
+              height: 32,
+              colors: [kPrimaryColor, kSecondaryColor],
+              borderColor: kPrimaryColor,
+              borderWidth: 1,
+              child: Padding(
+                padding: EdgeInsets.only(top: 6),
+                child: TextWithTap(
+                    QuickHelp.getPassions(
+                        widget.currentUser!.getPassions![index]),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    marginLeft: 14,
+                    marginRight: 14,
+                    textAlign: TextAlign.center,
+                    color: Colors.white),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:heyto/app/setup.dart';
 import 'package:heyto/home/chats/responsive_chat.dart';
@@ -33,11 +32,11 @@ import 'encounters/encounters_screen.dart';
 class HomeScreen extends StatefulWidget {
   static const String route = '/home';
 
-  static int tabHome = 0;
-  static int tabLikes = 1;
-  static int tabTickets = 1;
-  static int tabChat = 2;
-  static int tabProfile = 3;
+  static int tabHome = 4;
+  static int tabLikes = 3;
+  static int tabTickets = 0;
+  static int tabChat = 1;
+  static int tabProfile = 2;
 
   HomeScreen({this.currentUser});
 
@@ -108,10 +107,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _widgetOptions() {
     List<Widget> widgets = [
-      EncountersScreen(
-        currentUser: widget.currentUser,
-        key: UniqueKey(),
-      ),
+      // EncountersScreen(
+      //   currentUser: widget.currentUser,
+      //   key: UniqueKey(),
+      // ),
       // LikesScreen(currentUser: widget.currentUser,),
       //RefillCoinsScreen(currentUser: widget.currentUser,),
       AllLivesPage(
@@ -141,22 +140,22 @@ class _HomeScreenState extends State<HomeScreen> {
         : kContentColorDarkTheme;
     return BottomNavigationBar(
       items: [
-        BottomNavigationBarItem(
-          backgroundColor: bgColor,
-          icon: Component.buildNavIcon(
-              SvgPicture.asset(
-                'assets/svg/home_active.svg',
-                height: iconSize,
-                width: iconSize,
-                color: context.watch<CountersProvider>().tabIndex ==
-                        HomeScreen.tabHome
-                    ? kPrimaryColor
-                    : kDisabledColor,
-              ),
-              HomeScreen.tabHome,
-              context),
-          label: "Encounters",
-        ),
+        // BottomNavigationBarItem(
+        //   backgroundColor: bgColor,
+        //   icon: Component.buildNavIcon(
+        //       SvgPicture.asset(
+        //         'assets/svg/home_active.svg',
+        //         height: iconSize,
+        //         width: iconSize,
+        //         color: context.watch<CountersProvider>().tabIndex ==
+        //                 HomeScreen.tabHome
+        //             ? kPrimaryColor
+        //             : kDisabledColor,
+        //       ),
+        //       HomeScreen.tabHome,
+        //       context),
+        //   label: "Encounters",
+        // ),
         // BottomNavigationBarItem(
         //   backgroundColor: bgColor,
         //   icon: Component.buildNavIcon(

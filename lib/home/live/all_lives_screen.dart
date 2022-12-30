@@ -1,3 +1,4 @@
+import 'package:blur/blur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:heyto/helpers/responsive.dart';
 import 'package:heyto/home/coins/web_subscriptions.dart';
@@ -22,6 +23,7 @@ import 'package:heyto/models/UserModel.dart';
 import 'package:heyto/ui/container_with_corner.dart';
 import 'package:heyto/ui/text_with_tap.dart';
 import 'package:heyto/app/colors.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import '../../app/setup.dart';
 import '../../helpers/quick_cloud.dart';
@@ -79,23 +81,36 @@ class _AllLivesPageState extends State<AllLivesPage>
         //   borderRadius: 20,
         //   marginLeft: 10,
         //   marginRight: 10,
-        //   color: QuickHelp.isDarkMode(context) ? kContentColorGhostTheme : Colors.black,
-        //   onTap: () => QuickHelp.goToNavigatorScreen(context, GetMoneyScreen(currentUser: widget.currentUser,), route: GetMoneyScreen.route),
+        //   color: QuickHelp.isDarkMode(context)
+        //       ? kContentColorGhostTheme
+        //       : Colors.black,
+        //   onTap: () => QuickHelp.goToNavigatorScreen(
+        //       context,
+        //       GetMoneyScreen(
+        //         currentUser: widget.currentUser,
+        //       ),
+        //       route: GetMoneyScreen.route),
         //   child: Row(
         //     mainAxisAlignment: MainAxisAlignment.center,
         //     mainAxisSize: MainAxisSize.max,
         //     children: [
         //       Padding(
         //         padding: const EdgeInsets.only(left: 2),
-        //         child: SvgPicture.asset("assets/svg/dolar_diamond.svg", height: 20, width: 20,),
+        //         child: SvgPicture.asset(
+        //           "assets/svg/dolar_diamond.svg",
+        //           height: 20,
+        //           width: 20,
+        //         ),
         //       ),
-        //       SizedBox(child:
         //       SizedBox(
-        //         child: TextWithTap("${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamonds!).toStringAsFixed(1)} ${Setup.withdrawCurrencySymbol}",
+        //           child: SizedBox(
+        //         child: TextWithTap(
+        //           "${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamondsTotal!).toStringAsFixed(1)} ${Setup.withdrawCurrencySymbol}",
         //           color: Colors.white,
         //           marginRight: 5,
         //           marginLeft: 5,
-        //           fontSize: 15,),
+        //           fontSize: 15,
+        //         ),
         //       )),
         //     ],
         //   ),
@@ -111,22 +126,244 @@ class _AllLivesPageState extends State<AllLivesPage>
           ),
         ),
         backgroundColor: kTransparentColor,
-        actions: [
-          Visibility(
-            visible: false,
-            child: TextButton(
-                onPressed: () {},
-                child: Icon(
-                  Icons.search,
-                  color: kGrayColor,
-                  size: 30,
-                )),
+        // actions: [
+        //   Visibility(
+        //     visible: false,
+        //     child: TextButton(
+        //         onPressed: () {},
+        //         child: Icon(
+        //           Icons.search,
+        //           color: kGrayColor,
+        //           size: 30,
+        //         )),
+        //   ),
+        //   Visibility(
+        //     //visible: !QuickHelp.isWebPlatform(),
+        //     visible: kDebugMode,
+        //     child: TextButton(
+        //       onPressed: () {
+        //         if (widget.currentUser!.getAvatar == null) {
+        //           QuickHelp.showAppNotificationAdvanced(
+        //             title: "live_streaming.no_avatar_found_title".tr(),
+        //             message: "live_streaming.no_avatar_found_explain".tr(),
+        //             context: context,
+        //             isError: true,
+        //           );
+        //         } else {
+        //           checkPermission(true);
+        //         }
+        //       },
+        //       child: Icon(
+        //         Icons.videocam,
+        //         color: kPrimaryColor,
+        //         size: 30,
+        //       ),
+        //     ),
+        //   )
+        // ],
+      ),
+      body: Column(
+        children: [
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child:
+                  Responsive.isWebOrDeskTop(context) ? webBody() : screenBody(),
+            ),
           ),
-          Visibility(
-            //visible: !QuickHelp.isWebPlatform(),
-            visible: kDebugMode,
-            child: TextButton(
-              onPressed: () {
+        ],
+      ),
+    );
+  }
+
+  Widget screenBody() {
+    final slider = SleekCircularSlider(
+      min: 0,
+      max: (widget.currentUser!.getDiamondsTotal!.toDouble()),
+      initialValue: widget.currentUser!.getDiamondsTotal!.toDouble(),
+      appearance: CircularSliderAppearance(
+        size: 130.0,
+        infoProperties: InfoProperties(),
+        customColors: CustomSliderColors(
+          trackColor: kPhotosGrayColor,
+          hideShadow: true,
+          progressBarColors: [kPrimaryColor, kSecondaryColor],
+        ),
+      ),
+      innerWidget: (double value) {
+        // use your custom widget inside the slider (gets a slider value from the callback)
+        return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextWithTap(
+              "${(value * 100 / 5000).toStringAsPrecision(3)} %",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            TextWithTap(
+              "get_money.completed_".tr(),
+              color: Colors.white,
+            ),
+          ],
+        ));
+      },
+    );
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: [
+            Stack(alignment: AlignmentDirectional.center, children: [
+              ContainerCorner(
+                height: 230,
+                borderRadius: 10,
+                marginLeft: 20,
+                marginRight: 20,
+                marginTop: 20,
+                width: Responsive.isWebOrDeskTop(context) ||
+                        Responsive.isTablet(context)
+                    ? 420
+                    : null,
+                child: Blur(
+                  blurColor: Colors.black,
+                  colorOpacity: 0.1,
+                  blur: 30,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  child: QuickActions.photosWidget(
+                      widget.currentUser!.getAvatar!.url!),
+                ),
+              ),
+              ContainerCorner(
+                width: Responsive.isWebOrDeskTop(context) ||
+                        Responsive.isTablet(context)
+                    ? 420
+                    : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextWithTap(
+                            "Coins",
+                            color: kGrayColor,
+                          ),
+                          Spacing.height(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  height: MySize.getHeight(30),
+                                  width: MySize.getWidth(30),
+                                  child:
+                                      Image.asset("assets/images/dollar.png")),
+                              Spacing.width(5),
+                              TextWithTap(
+                                "${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamondsTotal!).toStringAsFixed(2)}",
+                                fontSize: 27,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                                // marginTop: 10,
+                                // marginBottom: 30,
+                              ),
+                            ],
+                          ),
+                          Spacing.height(30),
+                          TextWithTap(
+                            "get_money.min_to_withdraw".tr(),
+                            color: kGrayColor,
+                            //fontSize: 12,
+                          ),
+                          TextWithTap(
+                            "${Setup.withdrawCurrencySymbol} ${QuickHelp.convertDiamondsToMoney(Setup.diamondsNeededToRedeem).toStringAsFixed(2)}",
+                            fontSize: 27,
+                            fontWeight: FontWeight.w900,
+                            color: kPhotosGrayColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 30, top: 40),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          slider,
+                          TextWithTap(
+                            widget.currentUser!.getFirstName!,
+                            color: kGrayColor,
+                            marginBottom: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
+            SizedBox(
+              height: MySize.getHeight(150),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextWithTap(
+                  Setup.diamondsNeededToRedeem.toString(),
+                  color: QuickHelp.isDarkMode(context)
+                      ? Colors.white
+                      : Colors.black,
+                  fontSize: 15,
+                ),
+                SvgPicture.asset(
+                  "assets/svg/ic_diamond.svg",
+                  height: 28,
+                ),
+                TextWithTap(
+                  "get_money.min_required".tr(),
+                  color: QuickHelp.isDarkMode(context)
+                      ? Colors.white
+                      : Colors.black,
+                  fontSize: 15,
+                )
+              ],
+            ),
+            ContainerCorner(
+              color: kTransparentColor,
+              marginTop: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextWithTap("get_money.get_remain".tr()),
+                  SvgPicture.asset(
+                    "assets/svg/ic_diamond.svg",
+                    height: 22,
+                  ),
+                  TextWithTap((Setup.diamondsNeededToRedeem -
+                              widget.currentUser!.getDiamonds!) >
+                          0
+                      ? (Setup.diamondsNeededToRedeem -
+                              widget.currentUser!.getDiamonds!)
+                          .toString()
+                      : "0"),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MySize.getHeight(50),
+            ),
+            ContainerCorner(
+              marginTop: 20,
+              colors: [kSecondaryColor, kPrimaryColor],
+              setShadowToBottom: true,
+              width: Responsive.isWebOrDeskTop(context) ||
+                      Responsive.isTablet(context)
+                  ? 350
+                  : null,
+              onTap: () {
                 if (widget.currentUser!.getAvatar == null) {
                   QuickHelp.showAppNotificationAdvanced(
                     title: "live_streaming.no_avatar_found_title".tr(),
@@ -138,26 +375,22 @@ class _AllLivesPageState extends State<AllLivesPage>
                   checkPermission(true);
                 }
               },
-              child: Icon(
-                Icons.videocam,
-                color: kPrimaryColor,
-                size: 30,
+              shadowColor: kGrayColor,
+              borderRadius: 50,
+              marginRight: 40,
+              marginLeft: 40,
+              alignment: Alignment.center,
+              height: 50,
+              child: TextWithTap(
+                "GO TO LIVE",
+                color: Colors.white,
+                marginLeft: 10,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Responsive.isWebOrDeskTop(context)
-                  ? webBody()
-                  : gridOfLives(),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
