@@ -1,0 +1,148 @@
+{
+  "project_info": {
+    "project_number": "170826167906",
+    "project_id": "heyto-app-e6250",
+    "storage_bucket": "heyto-app-e6250.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170826167906:android:3a60344646531749f9c33b",
+        "android_client_info": {
+          "package_name": "com.kissme.videocall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170826167906-37qgov6nmp0ics8avj2221rfmn2d23ld.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "579238eee31e9dd0f9fa2caf2a7ec58d1c331d38"
+          }
+        },
+        {
+          "client_id": "170826167906-4ilmvtmcoif3h0meejf392pdgp1lq745.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "09afe2d3814f752028b177309f0329fc915dba64"
+          }
+        },
+        {
+          "client_id": "170826167906-4ual9hoet3kegnnb66430iqhgtlhimgc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "e3407a539721a143d7c39e50695cf978872c8db6"
+          }
+        },
+        {
+          "client_id": "170826167906-ar1fnv93ot5or2o5sq7jvd8ka6vocnup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "da33cbff20368a5c479949653c892fb8b293add8"
+          }
+        },
+        {
+          "client_id": "170826167906-da96mjfvkn8idfk2t53b0vhl7eijnaa0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "49402ed338d9129a45ced810e348625ff7125e52"
+          }
+        },
+        {
+          "client_id": "170826167906-ehi83a6oi55i697jggjo1d86v0pm2eja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "18a21be6175f8c3f926e732a6d9cb95f0cd90e4e"
+          }
+        },
+        {
+          "client_id": "170826167906-hved7dpf4ivgqvb1ms0spmak402hbiin.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "ad95894f21884a7376ff0092bc501ca639058164"
+          }
+        },
+        {
+          "client_id": "170826167906-lm50hmgjml7n8fiqqnf8j7rl88j08rn6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "5ebfab3e5bf5c17632050ac6195836efcc9e0788"
+          }
+        },
+        {
+          "client_id": "170826167906-q69germtufbcle8pbfcbvapqt1s599bq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "4aed718a6d24c59886a6781f127a7ee8c44b59b4"
+          }
+        },
+        {
+          "client_id": "170826167906-vtghg5aj9t2d3jtq5brr60kv3crthdtt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kissme.videocall",
+            "certificate_hash": "0d546c45758390ecdb91b47a21665ab42c419e37"
+          }
+        },
+        {
+          "client_id": "170826167906-759hap5rm1jrn4fu3lib5d27hohc5e1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHhASB6GvR37cNo0xdLJBVFRTCjgY_--w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170826167906-759hap5rm1jrn4fu3lib5d27hohc5e1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170826167906:android:905563bfbe16134ef9c33b",
+        "android_client_info": {
+          "package_name": "com.kissme.videocall_female"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170826167906-759hap5rm1jrn4fu3lib5d27hohc5e1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHhASB6GvR37cNo0xdLJBVFRTCjgY_--w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170826167906-759hap5rm1jrn4fu3lib5d27hohc5e1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
