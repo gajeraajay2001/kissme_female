@@ -259,11 +259,13 @@ class _AllLivesPageState extends State<AllLivesPage>
                               Container(
                                   height: MySize.getHeight(30),
                                   width: MySize.getWidth(30),
-                                  child:
-                                      Image.asset("assets/images/dollar.png")),
+                                  child: SvgPicture.asset(
+                                    "assets/svg/ic_coin_with_star.svg",
+                                  )),
                               Spacing.width(5),
                               TextWithTap(
-                                "${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamondsTotal!).toStringAsFixed(2)}",
+                                "${widget.currentUser!.getDiamondsTotal!.toStringAsFixed(2)}",
+                                // "${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamonds!).toStringAsFixed(2)}",
                                 fontSize: 27,
                                 fontWeight: FontWeight.w900,
                                 color: Colors.white,
@@ -278,11 +280,27 @@ class _AllLivesPageState extends State<AllLivesPage>
                             color: kGrayColor,
                             //fontSize: 12,
                           ),
-                          TextWithTap(
-                            "${Setup.withdrawCurrencySymbol} ${QuickHelp.convertDiamondsToMoney(Setup.diamondsNeededToRedeem).toStringAsFixed(2)}",
-                            fontSize: 27,
-                            fontWeight: FontWeight.w900,
-                            color: kPhotosGrayColor,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  height: MySize.getHeight(30),
+                                  width: MySize.getWidth(30),
+                                  child: SvgPicture.asset(
+                                    "assets/svg/ic_coin_with_star.svg",
+                                  )),
+                              Spacing.width(5),
+                              TextWithTap(
+                                "5000",
+                                // "${Setup.withdrawCurrencySymbol} ${QuickHelp.convertDiamondsToMoney(Setup.diamondsNeededToRedeem).toStringAsFixed(2)}",
+                                fontSize: 27,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                                // marginTop: 10,
+                                // marginBottom: 30,
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -293,11 +311,11 @@ class _AllLivesPageState extends State<AllLivesPage>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           slider,
-                          TextWithTap(
-                            widget.currentUser!.getFirstName!,
-                            color: kGrayColor,
-                            marginBottom: 10,
-                          ),
+                          // TextWithTap(
+                          //   widget.currentUser!.getFirstName!,
+                          //   color: kGrayColor,
+                          //   marginBottom: 10,
+                          // ),
                         ],
                       ),
                     ),
@@ -318,10 +336,12 @@ class _AllLivesPageState extends State<AllLivesPage>
                       : Colors.black,
                   fontSize: 15,
                 ),
+                Spacing.width(5),
                 SvgPicture.asset(
-                  "assets/svg/ic_diamond.svg",
-                  height: 28,
+                  "assets/svg/ic_coin_with_star.svg",
+                  height: 20,
                 ),
+                Spacing.width(5),
                 TextWithTap(
                   "get_money.min_required".tr(),
                   color: QuickHelp.isDarkMode(context)
@@ -338,10 +358,12 @@ class _AllLivesPageState extends State<AllLivesPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextWithTap("get_money.get_remain".tr()),
+                  Spacing.width(5),
                   SvgPicture.asset(
-                    "assets/svg/ic_diamond.svg",
-                    height: 22,
+                    "assets/svg/ic_coin_with_star.svg",
+                    height: 20,
                   ),
+                  Spacing.width(5),
                   TextWithTap((Setup.diamondsNeededToRedeem -
                               widget.currentUser!.getDiamonds!) >
                           0
@@ -852,9 +874,12 @@ class _AllLivesPageState extends State<AllLivesPage>
       );
     } else {
       if (isBroadcaster) {
-        QuickHelp.goToNavigatorScreen(
-            context, LivePreviewScreen(currentUser: widget.currentUser!),
-            route: LivePreviewScreen.route);
+        createLive();
+
+        //TODO: Live Preview Screen Removed By Ajay
+        // QuickHelp.goToNavigatorScreen(
+        //     context, LivePreviewScreen(currentUser: widget.currentUser!),
+        //     route: LivePreviewScreen.route);
       } else {
         if (liveStreamingModel!.getPrivate!) {
           if (!liveStreamingModel.getPrivateViewersId!
@@ -885,6 +910,84 @@ class _AllLivesPageState extends State<AllLivesPage>
               route: LiveStreamingScreen.route);
         }
       }
+    }
+  }
+
+  void createLive() async {
+    QuickHelp.showLoadingDialog(context, isDismissible: false);
+
+    QueryBuilder<LiveStreamingModel> queryBuilder =
+        QueryBuilder(LiveStreamingModel());
+    queryBuilder.whereEqualTo(
+        LiveStreamingModel.keyAuthorId, widget.currentUser!.objectId);
+    queryBuilder.whereEqualTo(LiveStreamingModel.keyStreaming, true);
+
+    ParseResponse parseResponse = await queryBuilder.query();
+    if (parseResponse.success) {
+      if (parseResponse.results != null) {
+        LiveStreamingModel live =
+            parseResponse.results!.first! as LiveStreamingModel;
+
+        live.setStreaming = false;
+        await live.save();
+
+        createLiveFinish();
+      } else {
+        createLiveFinish();
+      }
+    } else {
+      QuickHelp.showErrorResult(context, parseResponse.error!.code);
+      QuickHelp.hideLoadingDialog(context);
+    }
+  }
+
+  createLiveFinish() async {
+    LiveStreamingModel streamingModel = LiveStreamingModel();
+    streamingModel.setStreamingChannel =
+        widget.currentUser!.objectId! + QuickHelp.generateShortUId().toString();
+
+    streamingModel.setAuthor = widget.currentUser!;
+    streamingModel.setAuthorId = widget.currentUser!.objectId!;
+    streamingModel.setAuthorUid = widget.currentUser!.getUid!;
+
+    if (parseFile != null) {
+      streamingModel.setImage = parseFile!;
+    } else if (widget.currentUser!.getAvatar != null) {
+      streamingModel.setImage = widget.currentUser!.getAvatar!;
+    }
+
+    if (widget.currentUser!.getGeoPoint != null) {
+      streamingModel.setStreamingGeoPoint = widget.currentUser!.getGeoPoint!;
+    }
+
+    streamingModel.setPrivate = false;
+    streamingModel.setStreaming = false;
+    streamingModel.addViewersCount = 0;
+    streamingModel.addDiamonds = 0;
+
+    streamingModel.setLiveTitle = liveTitleController.text;
+
+    ParseResponse parseResponse = await streamingModel.save();
+
+    if (parseResponse.success) {
+      LiveStreamingModel liveStreaming = parseResponse.results!.first!;
+
+      widget.currentUser!.unset(UserModel.keyInitializingLiveCover);
+      widget.currentUser!.save();
+
+      QuickHelp.hideLoadingDialog(context);
+      QuickHelp.goToNavigatorScreen(
+          context,
+          LiveStreamingScreen(
+            channelName: streamingModel.getStreamingChannel!,
+            isBroadcaster: true,
+            currentUser: widget.currentUser!,
+            mLiveStreamingModel: liveStreaming,
+          ),
+          route: LiveStreamingScreen.route);
+    } else {
+      QuickHelp.showErrorResult(context, parseResponse.error!.code);
+      QuickHelp.hideLoadingDialog(context);
     }
   }
 

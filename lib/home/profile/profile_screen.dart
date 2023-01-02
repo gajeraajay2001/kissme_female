@@ -261,13 +261,13 @@ class _ProfileScreenState extends ResumableState<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                // onTap: () {},
-                onTap: () => QuickHelp.goToNavigatorScreen(
-                    context,
-                    ProfileDetailsScreen(
-                      currentUser: currentUser,
-                    ),
-                    route: ProfileDetailsScreen.route),
+                onTap: () {},
+                // onTap: () => QuickHelp.goToNavigatorScreen(
+                //     context,
+                //     ProfileDetailsScreen(
+                //       currentUser: currentUser,
+                //     ),
+                //     route: ProfileDetailsScreen.route),
                 child: Stack(
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,

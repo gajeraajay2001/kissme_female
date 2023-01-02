@@ -54,6 +54,7 @@ class _State extends State<VideoCallScreen> {
   String callDuration = "00:00";
   String? credits = "0";
   String? diamonds = "0";
+  bool isCallSended = false;
   StateSetter? screenState;
   LiveQuery liveQuery = LiveQuery();
   Subscription? subscription;
@@ -184,7 +185,8 @@ class _State extends State<VideoCallScreen> {
           previewAvailable = true;
         });
 
-        if (widget.isCaller == true) {
+        if (widget.isCaller == true && isCallSended == false) {
+          isCallSended = true;
           context.read<CallsProvider>().callUserInvitation(
               calleeId: widget.mUser!.objectId!,
               isVideo: true,
@@ -274,9 +276,9 @@ class _State extends State<VideoCallScreen> {
       switchVideo = !switchVideo;
     });
     if (switchVideo) {
-      _engine!.disableVideo();
+      _engine!.enableLocalVideo(false);
     } else {
-      _engine!.enableVideo();
+      _engine!.enableLocalVideo(true);
     }
   }
 
@@ -584,7 +586,7 @@ class _State extends State<VideoCallScreen> {
                 onTap: this._switchVideo,
                 color: Colors.black.withOpacity(0.3),
                 child: Icon(
-                  switchVideo ? Icons.videocam : Icons.videocam_off_sharp,
+                  !switchVideo ? Icons.videocam : Icons.videocam_off_sharp,
                   color: Colors.white,
                 ),
               )
@@ -605,8 +607,8 @@ class _State extends State<VideoCallScreen> {
                       left: 10, top: 10, bottom: 10, right: 10),
                   child: SvgPicture.asset(
                     widget.isCaller!
-                        ? "assets/svg/ticket_icon.svg"
-                        : "assets/svg/dolar_diamond.svg",
+                        ? "assets/svg/ic_coin_with_star.svg"
+                        : "assets/svg/ic_coin_with_star.svg",
                     height: 20,
                     width: 20,
                   ),
@@ -648,7 +650,7 @@ class _State extends State<VideoCallScreen> {
                 borderRadius: 50,
                 color: Colors.black.withOpacity(0.3),
                 child: Icon(
-                  switchAudio ? Icons.mic : Icons.mic_off,
+                  !switchAudio ? Icons.mic : Icons.mic_off,
                   size: 30,
                   color: Colors.white,
                 ),

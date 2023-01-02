@@ -2966,18 +2966,21 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
       height: Responsive.isMobile(context) || Responsive.isTablet(context)
           ? 300
           : size.height - 200,
-      width: size.width / 1.3,
+      width: size.width / 1.2,
       marginBottom: 15,
       //color: kTransparentColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Container(),
             ContainerCorner(
               borderRadius: 50,
               marginBottom: 5,
+              width: MySize.safeWidth,
               padding: EdgeInsets.only(
                   left: MySize.getWidth(30),
                   top: MySize.getHeight(10),
+                  right: MySize.getWidth(10),
                   bottom: MySize.getHeight(10)),
               colors: [
                 Colors.black.withOpacity(0.5),

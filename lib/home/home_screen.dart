@@ -248,6 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
         parseResponse.success &&
         parseResponse.results != null) {
       print("USER UPDATE HOME");
+      print(parseResponse.result);
       widget.currentUser = parseResponse.results!.first! as UserModel;
     }
 
