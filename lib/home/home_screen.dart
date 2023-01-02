@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late AppLifecycleReactor _appLifecycleReactor;
 
   static bool appTrackingDialogShowing = false;
-  double iconSize = 28;
+  double iconSize = 25;
 
   double _getElevation() {
     if (context.watch<CountersProvider>().tabIndex == 0) {
@@ -176,18 +176,22 @@ class _HomeScreenState extends State<HomeScreen> {
         // ),
         BottomNavigationBarItem(
           backgroundColor: bgColor,
-          icon: Component.buildNavIcon(
-            SvgPicture.asset(
-              'assets/svg/ic_tab_live_selected.svg',
-              height: 45,
-              width: 45,
-              color: context.watch<CountersProvider>().tabIndex ==
-                      HomeScreen.tabTickets
-                  ? kPrimaryColor
-                  : kDisabledColor,
+          icon: SizedBox(
+            height: 30,
+            width: 30,
+            child: Component.buildNavIcon(
+              SvgPicture.asset(
+                'assets/svg/ic_tab_live_selected.svg',
+                height: 30,
+                width: 30,
+                color: context.watch<CountersProvider>().tabIndex ==
+                        HomeScreen.tabTickets
+                    ? kPrimaryColor
+                    : kDisabledColor,
+              ),
+              HomeScreen.tabTickets,
+              context,
             ),
-            HomeScreen.tabTickets,
-            context,
           ),
           label: "Favorites",
         ),
@@ -480,7 +484,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         body: _widgetOptions()
             .elementAt(context.watch<CountersProvider>().tabIndex),
-        bottomNavigationBar: bottomNavBar(context),
+        bottomNavigationBar: Container(
+            height: MySize.getHeight(60), child: bottomNavBar(context)),
       ),
     );
   }
