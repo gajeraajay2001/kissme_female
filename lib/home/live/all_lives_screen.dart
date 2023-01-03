@@ -1,5 +1,7 @@
 import 'package:blur/blur.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:heyto/helpers/responsive.dart';
 import 'package:heyto/home/coins/web_subscriptions.dart';
 import 'package:heyto/home/profile/profile_screen.dart';
@@ -42,9 +44,9 @@ class AllLivesPage extends StatefulWidget {
 }
 
 class _AllLivesPageState extends State<AllLivesPage>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   int tabsLength = 4;
-
+  bool myStatus = true;
   int tabLive = 0;
   int tabChat = 1;
   int tabMatching = 2;
@@ -67,6 +69,36 @@ class _AllLivesPageState extends State<AllLivesPage>
           tabIndex = _tabController.index;
         });
       });
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        myStatus = true;
+        setState(() {});
+
+        break;
+      case AppLifecycleState.inactive:
+        myStatus = false;
+        setState(() {});
+        break;
+      case AppLifecycleState.paused:
+        myStatus = false;
+        setState(() {});
+        break;
+      case AppLifecycleState.detached:
+        myStatus = false;
+        setState(() {});
+        break;
+    }
   }
 
   @override
@@ -97,7 +129,7 @@ class _AllLivesPageState extends State<AllLivesPage>
         //       Padding(
         //         padding: const EdgeInsets.only(left: 2),
         //         child: SvgPicture.asset(
-        //           "assets/svg/dolar_diamond.svg",
+        //           "assets/svg/ic_coin_with_star.svg",
         //           height: 20,
         //           width: 20,
         //         ),
@@ -210,209 +242,232 @@ class _AllLivesPageState extends State<AllLivesPage>
         ));
       },
     );
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          children: [
-            Stack(alignment: AlignmentDirectional.center, children: [
-              ContainerCorner(
-                height: 230,
-                borderRadius: 10,
-                marginLeft: 20,
-                marginRight: 20,
-                marginTop: 20,
-                width: Responsive.isWebOrDeskTop(context) ||
-                        Responsive.isTablet(context)
-                    ? 420
-                    : null,
-                child: Blur(
-                  blurColor: Colors.black,
-                  colorOpacity: 0.1,
-                  blur: 30,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  child: QuickActions.photosWidget(
-                      widget.currentUser!.getAvatar!.url!),
+    return Container(
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Stack(alignment: AlignmentDirectional.center, children: [
+                ContainerCorner(
+                  height: 230,
+                  borderRadius: 10,
+                  marginLeft: 20,
+                  marginRight: 20,
+                  marginTop: 20,
+                  width: Responsive.isWebOrDeskTop(context) ||
+                          Responsive.isTablet(context)
+                      ? 420
+                      : null,
+                  child: Blur(
+                    blurColor: Colors.black,
+                    colorOpacity: 0.1,
+                    blur: 30,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: QuickActions.photosWidget(
+                        widget.currentUser!.getAvatar!.url!),
+                  ),
                 ),
-              ),
-              ContainerCorner(
-                width: Responsive.isWebOrDeskTop(context) ||
-                        Responsive.isTablet(context)
-                    ? 420
-                    : null,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextWithTap(
-                            "Coins",
-                            color: kGrayColor,
-                          ),
-                          Spacing.height(10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                  height: MySize.getHeight(30),
-                                  width: MySize.getWidth(30),
-                                  child: SvgPicture.asset(
-                                    "assets/svg/ic_coin_with_star.svg",
-                                  )),
-                              Spacing.width(5),
-                              TextWithTap(
-                                "${widget.currentUser!.getDiamondsTotal!.toStringAsFixed(2)}",
-                                // "${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamonds!).toStringAsFixed(2)}",
-                                fontSize: 27,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                                // marginTop: 10,
-                                // marginBottom: 30,
-                              ),
-                            ],
-                          ),
-                          Spacing.height(30),
-                          TextWithTap(
-                            "get_money.min_to_withdraw".tr(),
-                            color: kGrayColor,
-                            //fontSize: 12,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                  height: MySize.getHeight(30),
-                                  width: MySize.getWidth(30),
-                                  child: SvgPicture.asset(
-                                    "assets/svg/ic_coin_with_star.svg",
-                                  )),
-                              Spacing.width(5),
-                              TextWithTap(
-                                "5000",
-                                // "${Setup.withdrawCurrencySymbol} ${QuickHelp.convertDiamondsToMoney(Setup.diamondsNeededToRedeem).toStringAsFixed(2)}",
-                                fontSize: 27,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                                // marginTop: 10,
-                                // marginBottom: 30,
-                              ),
-                            ],
-                          ),
-                        ],
+                ContainerCorner(
+                  width: Responsive.isWebOrDeskTop(context) ||
+                          Responsive.isTablet(context)
+                      ? 420
+                      : null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextWithTap(
+                              "Coins",
+                              color: kGrayColor,
+                            ),
+                            Spacing.height(10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                    height: MySize.getHeight(30),
+                                    width: MySize.getWidth(30),
+                                    child: SvgPicture.asset(
+                                      "assets/svg/ic_coin_with_star.svg",
+                                    )),
+                                Spacing.width(5),
+                                TextWithTap(
+                                  "${widget.currentUser!.getDiamondsTotal!.toStringAsFixed(2)}",
+                                  // "${QuickHelp.convertDiamondsToMoney(widget.currentUser!.getDiamonds!).toStringAsFixed(2)}",
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  // marginTop: 10,
+                                  // marginBottom: 30,
+                                ),
+                              ],
+                            ),
+                            Spacing.height(30),
+                            TextWithTap(
+                              "get_money.min_to_withdraw".tr(),
+                              color: kGrayColor,
+                              //fontSize: 12,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                    height: MySize.getHeight(30),
+                                    width: MySize.getWidth(30),
+                                    child: SvgPicture.asset(
+                                      "assets/svg/ic_coin_with_star.svg",
+                                    )),
+                                Spacing.width(5),
+                                TextWithTap(
+                                  "5000",
+                                  // "${Setup.withdrawCurrencySymbol} ${QuickHelp.convertDiamondsToMoney(Setup.diamondsNeededToRedeem).toStringAsFixed(2)}",
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  // marginTop: 10,
+                                  // marginBottom: 30,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30, top: 40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          slider,
-                          // TextWithTap(
-                          //   widget.currentUser!.getFirstName!,
-                          //   color: kGrayColor,
-                          //   marginBottom: 10,
-                          // ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 30, top: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // slider,
+                            // TextWithTap(
+                            //   widget.currentUser!.getFirstName!,
+                            //   color: kGrayColor,
+                            //   marginBottom: 10,
+                            // ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ]),
-            SizedBox(
-              height: MySize.getHeight(150),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextWithTap(
-                  Setup.diamondsNeededToRedeem.toString(),
-                  color: QuickHelp.isDarkMode(context)
-                      ? Colors.white
-                      : Colors.black,
-                  fontSize: 15,
-                ),
-                Spacing.width(5),
-                SvgPicture.asset(
-                  "assets/svg/ic_coin_with_star.svg",
-                  height: 20,
-                ),
-                Spacing.width(5),
-                TextWithTap(
-                  "get_money.min_required".tr(),
-                  color: QuickHelp.isDarkMode(context)
-                      ? Colors.white
-                      : Colors.black,
-                  fontSize: 15,
-                )
-              ],
-            ),
-            ContainerCorner(
-              color: kTransparentColor,
-              marginTop: 5,
-              child: Row(
+              ]),
+              Spacing.height(40),
+              FlutterSwitch(
+                  value: myStatus,
+                  showOnOff: true,
+                  width: MySize.getWidth(85),
+                  onToggle: (value) async {
+                    widget.currentUser!.setOnlineStatus =
+                        !widget.currentUser!.getOnlineStatus!;
+                    var parseResponse = await widget.currentUser!.save();
+                    myStatus = widget.currentUser!.getOnlineStatus!;
+                    print(parseResponse);
+                    setState(() {});
+                  },
+                  activeColor: kPrimaryColor,
+                  activeTextColor: Colors.white,
+                  activeText: "Online",
+                  inactiveText: "Offline"),
+              Spacing.height(40),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextWithTap("get_money.get_remain".tr()),
+                  TextWithTap(
+                    Setup.diamondsNeededToRedeem.toString(),
+                    color: QuickHelp.isDarkMode(context)
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 15,
+                  ),
                   Spacing.width(5),
                   SvgPicture.asset(
                     "assets/svg/ic_coin_with_star.svg",
-                    height: 20,
+                    height: MySize.getHeight(20),
+                    width: MySize.getWidth(20),
                   ),
                   Spacing.width(5),
-                  TextWithTap((Setup.diamondsNeededToRedeem -
-                              widget.currentUser!.getDiamonds!) >
-                          0
-                      ? (Setup.diamondsNeededToRedeem -
-                              widget.currentUser!.getDiamonds!)
-                          .toString()
-                      : "0"),
+                  TextWithTap(
+                    "get_money.min_required".tr(),
+                    color: QuickHelp.isDarkMode(context)
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 15,
+                  )
                 ],
               ),
-            ),
-            SizedBox(
-              height: MySize.getHeight(50),
-            ),
-            ContainerCorner(
-              marginTop: 20,
-              colors: [kSecondaryColor, kPrimaryColor],
-              setShadowToBottom: true,
-              width: Responsive.isWebOrDeskTop(context) ||
-                      Responsive.isTablet(context)
-                  ? 350
-                  : null,
-              onTap: () {
-                if (widget.currentUser!.getAvatar == null) {
-                  QuickHelp.showAppNotificationAdvanced(
-                    title: "live_streaming.no_avatar_found_title".tr(),
-                    message: "live_streaming.no_avatar_found_explain".tr(),
-                    context: context,
-                    isError: true,
-                  );
-                } else {
-                  checkPermission(true);
-                }
-              },
-              shadowColor: kGrayColor,
-              borderRadius: 50,
-              marginRight: 40,
-              marginLeft: 40,
-              alignment: Alignment.center,
-              height: 50,
-              child: TextWithTap(
-                "GO TO LIVE",
-                color: Colors.white,
-                marginLeft: 10,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+              ContainerCorner(
+                color: kTransparentColor,
+                marginTop: 5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextWithTap("get_money.get_remain".tr()),
+                    Spacing.width(5),
+                    SvgPicture.asset(
+                      "assets/svg/ic_coin_with_star.svg",
+                      height: 20,
+                    ),
+                    Spacing.width(5),
+                    TextWithTap((Setup.diamondsNeededToRedeem -
+                                widget.currentUser!.getDiamonds!) >
+                            0
+                        ? (Setup.diamondsNeededToRedeem -
+                                widget.currentUser!.getDiamonds!)
+                            .toString()
+                        : "0"),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+              SizedBox(
+                height: MySize.getHeight(50),
+              ),
+              ContainerCorner(
+                marginTop: 20,
+                colors: [kSecondaryColor, kPrimaryColor],
+                setShadowToBottom: true,
+                width: Responsive.isWebOrDeskTop(context) ||
+                        Responsive.isTablet(context)
+                    ? 350
+                    : null,
+                onTap: () {
+                  if (widget.currentUser!.getAvatar == null) {
+                    QuickHelp.showAppNotificationAdvanced(
+                      title: "live_streaming.no_avatar_found_title".tr(),
+                      message: "live_streaming.no_avatar_found_explain".tr(),
+                      context: context,
+                      isError: true,
+                    );
+                  } else {
+                    checkPermission(true);
+                  }
+                },
+                shadowColor: kGrayColor,
+                borderRadius: 50,
+                marginRight: 40,
+                marginLeft: 40,
+                alignment: Alignment.center,
+                height: 50,
+                child: TextWithTap(
+                  "GO TO LIVE",
+                  color: Colors.white,
+                  marginLeft: 10,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            child: slider,
+            top: 80,
+            right: 30,
+          ),
+        ],
       ),
     );
   }
@@ -558,7 +613,7 @@ class _AllLivesPageState extends State<AllLivesPage>
                               ),
                               Row(children: [
                                 SvgPicture.asset(
-                                  "assets/svg/dolar_diamond.svg",
+                                  "assets/svg/ic_coin_with_star.svg",
                                   height: 15,
                                   width: 15,
                                 ),

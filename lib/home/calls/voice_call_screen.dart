@@ -485,7 +485,7 @@ class _State extends State<VoiceCallScreen> {
                   child: SvgPicture.asset(
                     widget.isCaller!
                         ? "assets/svg/ticket_icon.svg"
-                        : "assets/svg/dolar_diamond.svg",
+                        : "assets/svg/ic_coin_with_star.svg",
                     height: 20,
                     width: 20,
                   ),

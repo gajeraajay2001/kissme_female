@@ -673,7 +673,8 @@ class _ProfileScreenState extends ResumableState<ProfileScreen> {
 
     userModel!.unset("installation");
     await userModel.save();
-
+    widget.currentUser!.setOnlineStatus = false;
+    var parseResponse = await widget.currentUser!.save();
     ParseResponse response = await userModel.logout(deleteLocalUserData: true);
     if (response.success) {
       QuickHelp.initInstallation(null, null);

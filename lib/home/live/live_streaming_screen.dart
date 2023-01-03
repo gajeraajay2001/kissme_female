@@ -575,7 +575,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                                             MainAxisAlignment.start,
                                         children: [
                                           SvgPicture.asset(
-                                            "assets/svg/dolar_diamond.svg",
+                                            "assets/svg/ic_coin_with_star.svg",
                                             height: 25,
                                           ),
                                           TextWithTap(
@@ -730,7 +730,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
-                          "assets/svg/dolar_diamond.svg",
+                          "assets/svg/ic_coin_with_star.svg",
                           height: 40,
                         ),
                         Row(
@@ -941,7 +941,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                       height: 16,
                     ),
                     SvgPicture.asset(
-                      "assets/svg/dolar_diamond.svg",
+                      "assets/svg/ic_coin_with_star.svg",
                       height: 25,
                     ),
                   ],
@@ -1026,7 +1026,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                       marginLeft: 5,
                     ),
                     SvgPicture.asset(
-                      "assets/svg/dolar_diamond.svg",
+                      "assets/svg/ic_coin_with_star.svg",
                       height: 28,
                     ),
                     TextWithTap(
@@ -1138,7 +1138,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                         marginLeft: 5,
                       ),
                       SvgPicture.asset(
-                        "assets/svg/dolar_diamond.svg",
+                        "assets/svg/ic_coin_with_star.svg",
                         height: 28,
                       ),
                       TextWithTap(
@@ -1515,7 +1515,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                                                     child: Row(
                                                       children: [
                                                         SvgPicture.asset(
-                                                          "assets/svg/dolar_diamond.svg",
+                                                          "assets/svg/ic_coin_with_star.svg",
                                                           height: 24,
                                                         ),
                                                         TextWithTap(
@@ -1875,7 +1875,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                                                   MainAxisAlignment.start,
                                               children: [
                                                 SvgPicture.asset(
-                                                  "assets/svg/dolar_diamond.svg",
+                                                  "assets/svg/ic_coin_with_star.svg",
                                                   height: 20,
                                                 ),
                                                 TextWithTap(

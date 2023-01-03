@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:heyto/app/constants.dart';
 import 'package:heyto/app/setup.dart';
 import 'package:heyto/home/chats/responsive_chat.dart';
 import 'package:heyto/home/live/all_lives_screen.dart';
@@ -46,9 +47,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   late BuildContext context;
-
   late AppLifecycleReactor _appLifecycleReactor;
 
   static bool appTrackingDialogShowing = false;
@@ -376,15 +376,55 @@ class _HomeScreenState extends State<HomeScreen> {
       if (QuickHelp.isIOSPlatform()) {
         showAppTrackingPermission(context);
       }
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        if (!isNullEmptyOrFalse(widget.currentUser)) {
+          widget.currentUser!.setOnlineStatus = true;
+          var parseResponse = await widget.currentUser!.save();
+        }
+      });
     });
 
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
     _appLifecycleReactor =
         AppLifecycleReactor(appOpenAdManager: appOpenAdManager);
     _appLifecycleReactor.listenToAppStateChanges();
-
+    WidgetsBinding.instance.addObserver(this);
     //_updateUserLastOnline();
     super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        if (!isNullEmptyOrFalse(widget.currentUser)) {
+          widget.currentUser!.setOnlineStatus = true;
+          var parseResponse = await widget.currentUser!.save();
+          print(" My Cycle := app in resumed");
+        }
+        break;
+      case AppLifecycleState.inactive:
+        if (!isNullEmptyOrFalse(widget.currentUser)) {
+          widget.currentUser!.setOnlineStatus = false;
+          var parseResponse = await widget.currentUser!.save();
+          print(" My Cycle := app in inactive");
+        }
+        break;
+      case AppLifecycleState.paused:
+        if (!isNullEmptyOrFalse(widget.currentUser)) {
+          widget.currentUser!.setOnlineStatus = false;
+          var parseResponse = await widget.currentUser!.save();
+          print(" My Cycle := app in paused");
+        }
+        break;
+      case AppLifecycleState.detached:
+        if (!isNullEmptyOrFalse(widget.currentUser)) {
+          widget.currentUser!.setOnlineStatus = false;
+          var parseResponse = await widget.currentUser!.save();
+          print(" My Cycle := app in detached");
+        }
+        break;
+    }
   }
 
   checkUser() async {
@@ -395,6 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

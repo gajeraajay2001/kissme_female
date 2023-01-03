@@ -1849,7 +1849,7 @@ class _TicketsScreenState extends State<TicketsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SvgPicture.asset(
-                    "assets/svg/dolar_diamond.svg",
+                    "assets/svg/ic_coin_with_star.svg",
                     height: 70,
                     width: 70,
                   ),

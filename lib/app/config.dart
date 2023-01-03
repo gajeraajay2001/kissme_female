@@ -20,7 +20,7 @@ class Config {
   static const String appId = "5fKfVh2H7fTHod8Pzi9jqlL2VodCpIDYMZAKwE3e";
   static const String clientKey = "y81KFo2t61DTkgRrlSM4kUehae65CDNoO2I4dMr2";
 
-  static const String giphyApiKey = "B99xjzRl0oUWU8DzaWd8HRmnU711AnvCgx0roJIM";
+  static const String giphyApiKey = "jJluKbA8cAZsWX3w7fOKYaY6Fr83r6bz";
 
   static const String facebookAppId = "123456789";
 

@@ -4,22 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class Component {
-
-  static Widget buildNavIcon(
-
-      SvgPicture icon, int index, BuildContext context,
+  static Widget buildNavIcon(SvgPicture icon, int index, BuildContext context,
       {int badge = 0, Color color = kRedColor1}) {
-
     if (badge > 0) {
-
       Color bgColor = QuickHelp.isDarkModeNoContext()
           ? kContentColorLightTheme
           : kContentColorDarkTheme;
       return Container(
-
         width: MediaQuery.of(context).size.width,
-        height: kBottomNavigationBarHeight,
-        padding:  EdgeInsets.all(0.0),
+        // height: kBottomNavigationBarHeight,
+        padding: EdgeInsets.all(0.0),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -30,7 +24,7 @@ class Component {
               children: [
                 Center(
                   child: Container(
-                    padding:  EdgeInsets.all(0.0),
+                    padding: EdgeInsets.all(0.0),
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
@@ -39,10 +33,10 @@ class Component {
                           right: -9,
                           top: 5,
                           child: Container(
-                            padding:  EdgeInsets.only(top: 2.0),
+                            padding: EdgeInsets.only(top: 2.0),
                             height: 20,
                             width: 20,
-                            constraints:  BoxConstraints(
+                            constraints: BoxConstraints(
                               maxHeight: 45,
                               maxWidth: 45,
                             ),
@@ -57,7 +51,7 @@ class Component {
                             child: Center(
                               child: Text(
                                 "$badge",
-                                style:  TextStyle(
+                                style: TextStyle(
                                     color: Colors.white, fontSize: 10.0),
                                 textAlign: TextAlign.center,
                               ),
@@ -72,7 +66,6 @@ class Component {
             ),
           ),
         ),
-        
       );
     } else {
       return icon;
@@ -80,6 +73,6 @@ class Component {
   }
 
   Widget button() {
-    return ElevatedButton(onPressed: () {}, child:  Text(""));
+    return ElevatedButton(onPressed: () {}, child: Text(""));
   }
 }

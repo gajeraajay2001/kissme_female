@@ -302,7 +302,7 @@ class _GetMoneyScreenState extends State<GetMoneyScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   SvgPicture.asset(
-                                    "assets/svg/dolar_diamond.svg",
+                                    "assets/svg/ic_coin_with_star.svg",
                                     height: 70,
                                     width: 70,
                                   ),
@@ -766,7 +766,7 @@ class _GetMoneyScreenState extends State<GetMoneyScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        "assets/svg/dolar_diamond.svg",
+                        "assets/svg/ic_coin_with_star.svg",
                       ),
                       TextWithTap(
                         "get_money.widrawn_money".tr().toUpperCase(),

@@ -470,6 +470,7 @@ class QuickHelp {
       ParseResponse response = await currentUser.getUpdatedUser();
       if (response.success) {
         currentUser = response.result;
+        print(currentUser!.getOnlineStatus.toString());
         return currentUser;
       } else if (response.error!.code == 100) {
         // Return stored user

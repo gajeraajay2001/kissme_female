@@ -5,7 +5,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class UserModel extends ParseUser implements ParseCloneable {
-
   UserModel(String? username, String? password, String? emailAddress)
       : super(username, password, emailAddress);
 
@@ -16,8 +15,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   @override
   clone(Map map) => UserModel.clone()..fromJson(map as Map<String, dynamic>);
 
-  static Future<UserModel> getUserResult(dynamic user) async{
-
+  static Future<UserModel> getUserResult(dynamic user) async {
     UserModel? user = await ParseUser.currentUser();
     user = UserModel.clone()..fromJson(user as Map<String, dynamic>);
 
@@ -100,7 +98,6 @@ class UserModel extends ParseUser implements ParseCloneable {
   static const PASSIONS_Designer = "DNR";
   static const PASSIONS_Tea = "TEA";
 
-
   static const SEXUALITY_ASEXUAL = "AS";
   static const SEXUALITY_DEMI_SEXUAL = "DS";
   static const SEXUALITY_PAN_SEXUAL = "PS";
@@ -146,7 +143,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   static final String keyGenderBoth = "both";
 
   static final String keyStatusAll = "all";
-  static final String keyStatusOnline= "online";
+  static final String keyStatusOnline = "online";
   static final String keyStatusNew = "new";
 
   // Backend field
@@ -160,6 +157,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   // User sensitive data
   static final String keyRole = "role";
   static final String keyUsername = "username";
+  static final String onlineStatus = "onlineStatus";
   static final String keyEmail = "email";
   static const String keyEmailPublic = 'email_public';
   static const String keyEmailVerified = 'emailVerified';
@@ -280,19 +278,19 @@ class UserModel extends ParseUser implements ParseCloneable {
   static final String keySexualOrientations = "profile_sex_orientations";
 
   static final String keyShowGenderInProfile = "profile_show_gender";
-  static final String keyShowSexualOrientationInProfile = "profile_show_sex_orientation";
+  static final String keyShowSexualOrientationInProfile =
+      "profile_show_sex_orientation";
   static final String keyDistanceInMiles = "profile_distance_miles";
-
 
   static final String keyFavorites = "favorites";
 
-  static final String keyInitializingLiveCover= "liveCover";
+  static final String keyInitializingLiveCover = "liveCover";
 
   static final String keyFollowing = "following";
   static final String keyFollowers = "followers";
 
-  static final String keyPayoneerEmail= "payoneerEmail";
-  static final String keyIban= "Iban";
+  static final String keyPayoneerEmail = "payoneerEmail";
+  static final String keyIban = "Iban";
   static final String keyAccountName = "account_name";
   static final String keyBankName = "bank_name";
 
@@ -301,7 +299,6 @@ class UserModel extends ParseUser implements ParseCloneable {
   static final String keyPaymentSource = "payment_sources";
 
   static final String keyInviteUrl = "invite_url";
-
 
   String? get getSessionToken => get<String>(keySessionToken);
 
@@ -314,20 +311,26 @@ class UserModel extends ParseUser implements ParseCloneable {
   String? get getUsername => get<String>(keyUsername);
   set setUsername(String username) => set<String>(keyUsername, username);
 
+  bool? get getOnlineStatus => get<bool>(onlineStatus);
+  set setOnlineStatus(bool value) => set<bool>(onlineStatus, value);
+
   String? get getEmail => get<String>(keyEmail);
   set setEmail(String email) => set<String>(keyEmail, email);
 
   String? get getEmailPublic => get<String>(keyEmailPublic);
-  set setEmailPublic(String emailPublic) => set<String>(keyEmailPublic, emailPublic);
+
+  set setEmailPublic(String emailPublic) =>
+      set<String>(keyEmailPublic, emailPublic);
 
   String? get getFullName {
     String? name = get<String>(keyFullName);
-    if(name != null){
+    if (name != null) {
       return name;
     } else {
       return "";
     }
   }
+
   set setFullName(String fullName) => set<String>(keyFullName, fullName);
 
   String? get getFirstName => get<String>(keyFirstName);
@@ -346,15 +349,16 @@ class UserModel extends ParseUser implements ParseCloneable {
   set setGender(String gender) => set<String>(keyGender, gender);
 
   String? get getGenderPref {
-
     String? prefGender = get<String>(keyPrefGender);
-    if(prefGender != null){
+    if (prefGender != null) {
       return prefGender;
     } else {
       return keyGenderBoth;
     }
   }
-  set setGenderPref(String genderPref) => set<String>(keyPrefGender, genderPref);
+
+  set setGenderPref(String genderPref) =>
+      set<String>(keyPrefGender, genderPref);
 
   String? get getAccountName => get<String>(keyAccountName);
   set setAccountName(String name) => set<String>(keyAccountName, name);
@@ -363,65 +367,73 @@ class UserModel extends ParseUser implements ParseCloneable {
   set setBankName(String bank) => set<String>(keyBankName, bank);
 
   int? get getPayouts {
-
     int? payout = get<int>(keyPayouts);
-    if(payout != null){
+    if (payout != null) {
       return payout;
     } else {
       return 0;
     }
   }
-  set setPayouts(int incrementPayout) => setIncrement(keyPayouts, incrementPayout);
+
+  set setPayouts(int incrementPayout) =>
+      setIncrement(keyPayouts, incrementPayout);
 
   int? get getPrefDistance {
-
     int? prefDistance = get<int>(keyPrefDistance);
-    if(prefDistance != null){
+    if (prefDistance != null) {
       return prefDistance;
     } else {
       return Setup.maxDistanceBetweenUsers;
     }
   }
-  set setPrefDistance(int prefDistance) => set<int>(keyPrefDistance, prefDistance);
+
+  set setPrefDistance(int prefDistance) =>
+      set<int>(keyPrefDistance, prefDistance);
 
   String? get getBio => get<String>(keyBio);
   set setBio(String bio) => set<String>(keyBio, bio);
 
   ParseFileBase? get getAvatar => get<ParseFileBase>(keyAvatar);
-  set setAvatar(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar, parseFileBase);
+  set setAvatar(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar, parseFileBase);
 
   set deleteAvatar(ParseFileBase parseFileBase) => delete<ParseFileBase>();
 
   ParseFileBase? get getAvatar1 => get<ParseFileBase>(keyAvatar1);
-  set setAvatar1(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar1, parseFileBase);
+  set setAvatar1(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar1, parseFileBase);
 
   ParseFileBase? get getAvatar2 => get<ParseFileBase>(keyAvatar2);
-  set setAvatar2(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar2, parseFileBase);
+  set setAvatar2(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar2, parseFileBase);
 
   ParseFileBase? get getAvatar3 => get<ParseFileBase>(keyAvatar3);
-  set setAvatar3(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar3, parseFileBase);
+  set setAvatar3(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar3, parseFileBase);
 
   ParseFileBase? get getAvatar4 => get<ParseFileBase>(keyAvatar4);
-  set setAvatar4(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar4, parseFileBase);
+  set setAvatar4(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar4, parseFileBase);
 
   ParseFileBase? get getAvatar5 => get<ParseFileBase>(keyAvatar5);
-  set setAvatar5(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar5, parseFileBase);
+  set setAvatar5(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar5, parseFileBase);
 
   ParseFileBase? get getAvatar6 => get<ParseFileBase>(keyAvatar6);
-  set setAvatar6(ParseFileBase parseFileBase) => set<ParseFileBase>(keyAvatar6, parseFileBase);
-
+  set setAvatar6(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyAvatar6, parseFileBase);
 
   static final String keyRemovedMatch = "removedMatch";
 
-  set setAvatars(PictureModel pictureModel){
+  set setAvatars(PictureModel pictureModel) {
     addRelation(keyAvatars, [pictureModel]);
   }
 
-  set setAvatarsList(List<PictureModel> pictureModel){
+  set setAvatarsList(List<PictureModel> pictureModel) {
     addRelation(keyAvatars, pictureModel);
   }
 
-  set removeAvatars(PictureModel pictureModel){
+  set removeAvatars(PictureModel pictureModel) {
     addRelation(keyAvatars, [pictureModel]);
   }
 
@@ -433,166 +445,182 @@ class UserModel extends ParseUser implements ParseCloneable {
 
   bool? get getEmailVerified {
     var isVerified = get<bool>(keyEmailVerified);
-    if(isVerified != null){
+    if (isVerified != null) {
       return isVerified;
-    }else{
+    } else {
       return false;
     }
   }
 
-  ParseFileBase? get getInitializingLiveCover => get<ParseFileBase>(keyInitializingLiveCover);
-  set setInitializingLiveCover(ParseFileBase parseFileBase) => set<ParseFileBase>(keyInitializingLiveCover, parseFileBase);
+  ParseFileBase? get getInitializingLiveCover =>
+      get<ParseFileBase>(keyInitializingLiveCover);
+  set setInitializingLiveCover(ParseFileBase parseFileBase) =>
+      set<ParseFileBase>(keyInitializingLiveCover, parseFileBase);
 
   int? get getDiamonds {
-
     int? token = get<int>(keyDiamonds);
-    if(token != null){
+    if (token != null) {
       return token;
     } else {
       return 0;
     }
   }
+
   set setDiamonds(int diamonds) => setIncrement(keyDiamonds, diamonds);
   set removeDiamonds(int diamonds) => setDecrement(keyDiamonds, diamonds);
 
   int? get getDiamondsTotal {
-
     int? token = get<int>(keyDiamondsTotal);
-    if(token != null){
+    if (token != null) {
       return token;
     } else {
       return 0;
     }
   }
-  set setDiamondsTotal(int diamondsTotal) => setIncrement(keyDiamondsTotal, diamondsTotal);
 
-  List? get getFollowing{
+  set setDiamondsTotal(int diamondsTotal) =>
+      setIncrement(keyDiamondsTotal, diamondsTotal);
 
-    List? following = get<List<dynamic>>(keyFollowing); //get<List<dynamic>>(keyFollowing);
-    if(following != null && following.length > 0){
+  List? get getFollowing {
+    List? following =
+        get<List<dynamic>>(keyFollowing); //get<List<dynamic>>(keyFollowing);
+    if (following != null && following.length > 0) {
       return following;
     } else {
       return [];
     }
   }
+
   set setFollowing(String authorId) => setAddUnique(keyFollowing, authorId);
   set removeFollowing(String authorId) => setRemove(keyFollowing, authorId);
 
-  List<dynamic>? get getFollowers{
-
+  List<dynamic>? get getFollowers {
     List<dynamic>? followers = get<List<dynamic>>(keyFollowers);
-    if(followers != null && followers.length > 0){
+    if (followers != null && followers.length > 0) {
       return followers;
     } else {
       return [];
     }
   }
+
   set setFollowers(String authorId) => setAddUnique(keyFollowers, authorId);
   set removeFollowers(String authorId) => setRemove(keyFollowers, authorId);
 
   String? get getInviteUrl => get<String>(keyInviteUrl);
   set setInviteUrl(String role) => set<String>(keyInviteUrl, role);
 
-  set setEmailVerified(bool emailVerified) => set<bool>(keyEmailVerified, emailVerified);
+  set setEmailVerified(bool emailVerified) =>
+      set<bool>(keyEmailVerified, emailVerified);
 
   bool? get getActivationStatus => get<bool>(keyUserStatus);
-  set setActivationStatus(bool activated) => set<bool>(keyUserStatus, activated);
+  set setActivationStatus(bool activated) =>
+      set<bool>(keyUserStatus, activated);
 
   bool? get getAccountDeleted => get<bool>(keyUserAccountDeleted);
-  set setAccountDeleted(bool deleted) => set<bool>(keyUserAccountDeleted, deleted);
+  set setAccountDeleted(bool deleted) =>
+      set<bool>(keyUserAccountDeleted, deleted);
 
   String? get getFacebookId {
     String? content = get<String>(keyFacebookId);
-    if(content != null && content.isNotEmpty){
+    if (content != null && content.isNotEmpty) {
       return content;
     } else {
       return "";
     }
   }
-  set setFacebookId(String facebookId) => set<String>(keyFacebookId, facebookId);
+
+  set setFacebookId(String facebookId) =>
+      set<String>(keyFacebookId, facebookId);
 
   String? get getGoogleId {
     String? content = get<String>(keyGoogleId);
-    if(content != null && content.isNotEmpty){
+    if (content != null && content.isNotEmpty) {
       return content;
     } else {
       return "";
     }
   }
+
   set setGoogleId(String googleId) => set<String>(keyGoogleId, googleId);
 
   String? get getAppleId => get<String>(keyAppleId);
   set setAppleId(String appleId) => set<String>(keyAppleId, appleId);
 
   String? get getInstagramId => get<String>(keyInstagramId);
-  set setInstagramId(String instagramId) => set<String>(keyInstagramId, instagramId);
+  set setInstagramId(String instagramId) =>
+      set<String>(keyInstagramId, instagramId);
 
   bool? get getHasPassword => get<bool>(keyHasPassword);
-  set setHasPassword(bool hasPassword) => set<bool>(keyHasPassword, hasPassword);
+  set setHasPassword(bool hasPassword) =>
+      set<bool>(keyHasPassword, hasPassword);
 
   bool? get getHasGeoPoint {
-
     bool? hasGeoPoint = get<bool>(keyHasGeoPoint);
-    if(hasGeoPoint != null){
+    if (hasGeoPoint != null) {
       return hasGeoPoint;
     } else {
       return false;
     }
   }
-  set setHasGeoPoint(bool hasGeoPoint) => set<bool>(keyHasGeoPoint, hasGeoPoint);
+
+  set setHasGeoPoint(bool hasGeoPoint) =>
+      set<bool>(keyHasGeoPoint, hasGeoPoint);
 
   bool? get getLocationTypeNearBy {
-
     bool? locationPref = get<bool>(keyPrefLocationType);
-    if(locationPref != null){
+    if (locationPref != null) {
       return locationPref;
     } else {
       return true;
     }
   }
-  set setLocationTypeNearBy(bool prefLocationType) => set<bool>(keyPrefLocationType, prefLocationType);
+
+  set setLocationTypeNearBy(bool prefLocationType) =>
+      set<bool>(keyPrefLocationType, prefLocationType);
 
   String? get getLocation {
     String? location = get<String>(keyLocation);
-    if(location != null && location.isNotEmpty){
-
-      if(this.getHideMyLocation == true){
+    if (location != null && location.isNotEmpty) {
+      if (this.getHideMyLocation == true) {
         return "edit_profile.city_hidden".tr();
       } else {
         return location;
       }
-
     } else {
-        return "edit_profile.no_location_update".tr();
+      return "edit_profile.no_location_update".tr();
     }
   }
 
   String? get getLocationOrEmpty {
     String? location = get<String>(keyLocation);
-    if(location != null && location.isNotEmpty){
+    if (location != null && location.isNotEmpty) {
       return location;
     } else {
       return "";
     }
   }
+
   String? get getLocationOnly {
     String? location = get<String>(keyLocation);
-    if(location != null && location.isNotEmpty){
+    if (location != null && location.isNotEmpty) {
       return location;
     } else {
       return "edit_profile.add_city_name".tr();
     }
   }
-  set setLocation(String locationName) => set<String>(keyLocation, locationName);
+
+  set setLocation(String locationName) =>
+      set<String>(keyLocation, locationName);
 
   String? get getCity {
     String? city = get<String>(keyCity);
-    if(city != null && city.isNotEmpty){
+    if (city != null && city.isNotEmpty) {
       return city;
     } else {
       return "";
     }
   }
+
   set setCity(String city) => set<String>(keyCity, city);
 
   int? get getPopularity => get<int>(keyPopularity);
@@ -600,22 +628,24 @@ class UserModel extends ParseUser implements ParseCloneable {
 
   int? get getPrefMinAge {
     int? prefAge = get<int>(keyPrefMinimumAge);
-    if(prefAge != null){
+    if (prefAge != null) {
       return prefAge;
     } else {
       return Setup.minimumAgeToRegister;
     }
   }
+
   set setPrefMinAge(int minAge) => set<int>(keyPrefMinimumAge, minAge);
 
   int? get getPrefMaxAge {
     int? prefAge = get<int>(keyPrefMaximumAge);
-    if(prefAge != null){
+    if (prefAge != null) {
       return prefAge;
     } else {
       return Setup.maximumAgeToRegister;
     }
   }
+
   set setPrefMaxAge(int maxAge) => set<int>(keyPrefMaximumAge, maxAge);
 
   int? get getCredits => get<int>(keyCredit);
@@ -624,36 +654,40 @@ class UserModel extends ParseUser implements ParseCloneable {
 
   String? get getCountry {
     String? country = get<String>(keyCountry);
-    if(country != null && country.isNotEmpty){
+    if (country != null && country.isNotEmpty) {
       return country;
     } else {
       return "";
     }
   }
+
   set setCountry(String country) => set<String>(keyCountry, country);
 
   String? get getCountryCode => get<String>(keyCountryCode);
-  set setCountryCode(String countryCode) => set<String>(keyCountryCode, countryCode);
+  set setCountryCode(String countryCode) =>
+      set<String>(keyCountryCode, countryCode);
 
   String? get getCountryDialCode => get<String>(keyCountryDialCode);
-  set setCountryDialCode(String countryDialCode) => set<String>(keyCountryDialCode, countryDialCode);
+  set setCountryDialCode(String countryDialCode) =>
+      set<String>(keyCountryDialCode, countryDialCode);
 
   String? get getPhoneNumber {
     String? phone = get<String>(keyPhoneNumber);
-    if(phone != null && phone.isNotEmpty){
+    if (phone != null && phone.isNotEmpty) {
       return phone;
     } else {
       return "";
     }
   }
 
-  set setPhoneNumber(String phoneNumber) => set<String>(keyPhoneNumber, phoneNumber);
+  set setPhoneNumber(String phoneNumber) =>
+      set<String>(keyPhoneNumber, phoneNumber);
 
-
-  set setPhoneNumberFull(String phoneNumberFull) => set<String>(keyPhoneNumberFull, phoneNumberFull);
+  set setPhoneNumberFull(String phoneNumberFull) =>
+      set<String>(keyPhoneNumberFull, phoneNumberFull);
   String? get getPhoneNumberFull {
     String? phone = get<String>(keyPhoneNumberFull);
-    if(phone != null && phone.isNotEmpty){
+    if (phone != null && phone.isNotEmpty) {
       return phone;
     } else {
       return "";
@@ -662,87 +696,85 @@ class UserModel extends ParseUser implements ParseCloneable {
 
   String? get getCompanyName {
     String? company = get<String>(keyCompanyName);
-    if(company != null && company.isNotEmpty){
+    if (company != null && company.isNotEmpty) {
       return company;
     } else {
       return "";
     }
   }
-  set setCompanyName(String companyName) => set<String>(keyCompanyName, companyName);
+
+  set setCompanyName(String companyName) =>
+      set<String>(keyCompanyName, companyName);
 
   String? get getJobTitle {
-
     String? job = get<String>(keyJobTitle);
-    if(job != null && job.isNotEmpty){
+    if (job != null && job.isNotEmpty) {
       return job;
     } else {
       return "";
     }
   }
+
   set setJobTitle(String jobTitle) => set<String>(keyJobTitle, jobTitle);
 
   String? get getSchool {
-
     String? school = get<String>(keySchool);
-    if(school != null && school.isNotEmpty){
+    if (school != null && school.isNotEmpty) {
       return school;
     } else {
       return "";
     }
-
   }
+
   set setSchool(String school) => set<String>(keySchool, school);
 
   String? get getAboutYou {
-
     String? about = get<String>(keyAboutMe);
     String? bio = get<String>(keyBio);
 
-    if(about != null && about.isNotEmpty){
+    if (about != null && about.isNotEmpty) {
       return about;
-
-    } else if(bio != null && bio.isNotEmpty){
+    } else if (bio != null && bio.isNotEmpty) {
       return bio;
-
     } else {
       return "";
     }
-
   }
+
   set setAboutYou(String about) => set<String>(keyAboutMe, about);
 
-  String? get getMoodTitle{
+  String? get getMoodTitle {
     String? mood = get<String>(keyMoodTitle);
-    if(mood != null && mood.isNotEmpty){
+    if (mood != null && mood.isNotEmpty) {
       return mood;
     } else {
       return "";
     }
   }
+
   set setMoodTitle(String moodTitle) => set<String>(keyMoodTitle, moodTitle);
 
   bool? get isPhotoVerified {
     bool? photoVerified = get<bool>(keyPhotoVerified);
-    if(photoVerified != null){
+    if (photoVerified != null) {
       return photoVerified;
     } else {
       return false;
     }
   }
 
-  set setPhotoVerified(bool photoVerified) => set<bool>(keyPhotoVerified, photoVerified);
+  set setPhotoVerified(bool photoVerified) =>
+      set<bool>(keyPhotoVerified, photoVerified);
 
   bool? get isPremium {
     DateTime? premium = get<DateTime>(keyPremium);
     DateTime now = DateTime.now();
-    if(premium != null){
-
-      if(now.isBefore(premium)){
+    if (premium != null) {
+      if (now.isBefore(premium)) {
         return true;
       } else {
         return false;
       }
-
     } else {
       return false;
     }
@@ -752,47 +784,57 @@ class UserModel extends ParseUser implements ParseCloneable {
   set setPremium(DateTime premium) => set<DateTime>(keyPremium, premium);
 
   DateTime? get getVipAdsDisabled => get<DateTime>(vipAdsDisabled);
-  set setVipAdsDisabled(DateTime adsDisabled) => set<DateTime>(vipAdsDisabled, adsDisabled);
+  set setVipAdsDisabled(DateTime adsDisabled) =>
+      set<DateTime>(vipAdsDisabled, adsDisabled);
 
   DateTime? get getVip3xPopular => get<DateTime>(vip3xPopular);
-  set setVip3xPopular(DateTime xPopular) => set<DateTime>(vip3xPopular, xPopular);
+  set setVip3xPopular(DateTime xPopular) =>
+      set<DateTime>(vip3xPopular, xPopular);
 
   DateTime? get getVipShowOnline => get<DateTime>(vipShowOnline);
-  set setVipShowOnline(DateTime showOnline) => set<DateTime>(vipShowOnline, showOnline);
+  set setVipShowOnline(DateTime showOnline) =>
+      set<DateTime>(vipShowOnline, showOnline);
 
   DateTime? get getVipExtraShows => get<DateTime>(vipExtraShows);
-  set setVipExtraShows(DateTime extraShows) => set<DateTime>(vipExtraShows, extraShows);
+  set setVipExtraShows(DateTime extraShows) =>
+      set<DateTime>(vipExtraShows, extraShows);
 
   DateTime? get getVipMoreVisits => get<DateTime>(vipMoreVisits);
-  set setVipMoreVisits(DateTime moreVisits) => set<DateTime>(vipMoreVisits, moreVisits);
+  set setVipMoreVisits(DateTime moreVisits) =>
+      set<DateTime>(vipMoreVisits, moreVisits);
 
   DateTime? get getVipMoveToTop => get<DateTime>(vipMoveToTop);
-  set setVipMoveToTop(DateTime moveToTop) => set<DateTime>(vipMoveToTop, moveToTop);
+  set setVipMoveToTop(DateTime moveToTop) =>
+      set<DateTime>(vipMoveToTop, moveToTop);
 
   bool? get getVipInvisibleMode => get<bool>(vipInvisibleMode);
-  set setVipInvisibleMode(bool invisibleMode) => set<bool>(vipInvisibleMode, invisibleMode);
+  set setVipInvisibleMode(bool invisibleMode) =>
+      set<bool>(vipInvisibleMode, invisibleMode);
 
   bool? get getVipIsInvisible => get<bool>(vipIsInvisible);
-  set setVipIsInvisible(bool isInvisible) => set<bool>(vipIsInvisible, isInvisible);
+  set setVipIsInvisible(bool isInvisible) =>
+      set<bool>(vipIsInvisible, isInvisible);
 
   bool? get isNameChanged {
-
-   bool? nameChanged = get<bool>(keyHasChangedName);
-    if(nameChanged != null){
+    bool? nameChanged = get<bool>(keyHasChangedName);
+    if (nameChanged != null) {
       return nameChanged;
     } else {
       return false;
     }
   }
 
-  set setNameChanged(bool nameChanged) => set<bool>(keyHasChangedName, nameChanged);
+  set setNameChanged(bool nameChanged) =>
+      set<bool>(keyHasChangedName, nameChanged);
 
   bool? get getAccountHidden => get<bool>(keyAccountHidden);
-  set setAccountHidden(bool accountHidden) => set<bool>(keyAccountHidden, accountHidden);
+  set setAccountHidden(bool accountHidden) =>
+      set<bool>(keyAccountHidden, accountHidden);
 
   List<dynamic>? get getBlockedUsers => get<List<dynamic>>(keyBlockedUsers);
 
-  set setBlockedUsers(List<UserModel> blockedUsers) => set<List<UserModel>>(keyBlockedUsers, blockedUsers);
+  set setBlockedUsers(List<UserModel> blockedUsers) =>
+      set<List<UserModel>>(keyBlockedUsers, blockedUsers);
 
   set setBlockedUser(UserModel blockedUser) {
     List<UserModel> user = [];
@@ -813,214 +855,222 @@ class UserModel extends ParseUser implements ParseCloneable {
   }
 
   bool? get getPrivacyShowDistance {
-
     bool? privacyShowDistance = get<bool>(keyPrivacyShowDistance);
-    if(privacyShowDistance != null){
+    if (privacyShowDistance != null) {
       return !privacyShowDistance;
     } else {
       return true;
     }
   }
-  set setPrivacyShowDistance(bool privacyShowDistance) => set<bool>(keyPrivacyShowDistance, privacyShowDistance);
+
+  set setPrivacyShowDistance(bool privacyShowDistance) =>
+      set<bool>(keyPrivacyShowDistance, privacyShowDistance);
 
   bool? get getPrivacyShowStatusOnline {
-
     bool? privacyShowStatusOnline = get<bool>(keyPrivacyShowStatusOnline);
-    if(privacyShowStatusOnline != null){
+    if (privacyShowStatusOnline != null) {
       return !privacyShowStatusOnline;
     } else {
       return true;
     }
   }
-  set setPrivacyShowStatusOnline(bool privacyShowStatusOnline) => set<bool>(keyPrivacyShowStatusOnline, privacyShowStatusOnline);
+
+  set setPrivacyShowStatusOnline(bool privacyShowStatusOnline) =>
+      set<bool>(keyPrivacyShowStatusOnline, privacyShowStatusOnline);
 
   bool? get getPushNotificationsMessage {
-
     bool? pushNotificationsMessage = get<bool>(keyPushNotificationsMessage);
-    if(pushNotificationsMessage != null){
+    if (pushNotificationsMessage != null) {
       return !pushNotificationsMessage;
     } else {
       return true;
     }
   }
-  set setPushNotificationsMessage(bool pushNotificationsMessage) => set<bool>(keyPushNotificationsMessage, pushNotificationsMessage);
+
+  set setPushNotificationsMessage(bool pushNotificationsMessage) =>
+      set<bool>(keyPushNotificationsMessage, pushNotificationsMessage);
 
   bool? get getPushNotificationsMatches {
-
     bool? pushNotificationsMatches = get<bool>(keyPushNotificationsMatches);
-    if(pushNotificationsMatches != null){
+    if (pushNotificationsMatches != null) {
       return !pushNotificationsMatches;
     } else {
       return true;
     }
   }
-  set setPushNotificationsMatches(bool pushNotificationsMatches) => set<bool>(keyPushNotificationsMatches, pushNotificationsMatches);
+
+  set setPushNotificationsMatches(bool pushNotificationsMatches) =>
+      set<bool>(keyPushNotificationsMatches, pushNotificationsMatches);
 
   bool? get getPushNotificationsLike {
-
     bool? pushNotificationsLike = get<bool>(keyPushNotificationsLike);
-    if(pushNotificationsLike != null){
+    if (pushNotificationsLike != null) {
       return !pushNotificationsLike;
     } else {
       return true;
     }
   }
-  set setPushNotificationsLike(bool pushNotificationsLike) => set<bool>(keyPushNotificationsLike, pushNotificationsLike);
+
+  set setPushNotificationsLike(bool pushNotificationsLike) =>
+      set<bool>(keyPushNotificationsLike, pushNotificationsLike);
 
   bool? get getPushNotificationsVisitor {
-
     bool? pushNotificationsVisitor = get<bool>(keyPushNotificationsVisitor);
-    if(pushNotificationsVisitor != null){
+    if (pushNotificationsVisitor != null) {
       return !pushNotificationsVisitor;
     } else {
       return true;
     }
   }
-  set setPushNotificationsVisitor(bool pushNotificationsVisitor) => set<bool>(keyPushNotificationsVisitor, pushNotificationsVisitor);
+
+  set setPushNotificationsVisitor(bool pushNotificationsVisitor) =>
+      set<bool>(keyPushNotificationsVisitor, pushNotificationsVisitor);
 
   bool? get getPushNotificationsFavorite {
-
     bool? pushNotificationsFavorite = get<bool>(keyPushNotificationsFavorite);
-    if(pushNotificationsFavorite != null){
+    if (pushNotificationsFavorite != null) {
       return !pushNotificationsFavorite;
     } else {
       return true;
     }
   }
-  set setPushNotificationsFavorite(bool pushNotificationsFavorite) => set<bool>(keyPushNotificationsFavorite, pushNotificationsFavorite);
+
+  set setPushNotificationsFavorite(bool pushNotificationsFavorite) =>
+      set<bool>(keyPushNotificationsFavorite, pushNotificationsFavorite);
 
   bool? get getPushNotificationsLive {
-
     bool? pushNotificationsLive = get<bool>(keyPushNotificationsLive);
-    if(pushNotificationsLive != null){
+    if (pushNotificationsLive != null) {
       return !pushNotificationsLive;
     } else {
       return true;
     }
   }
-  set setPushNotificationsLive(bool pushNotificationsLive) => set<bool>(keyPushNotificationsLive, pushNotificationsLive);
+
+  set setPushNotificationsLive(bool pushNotificationsLive) =>
+      set<bool>(keyPushNotificationsLive, pushNotificationsLive);
 
   String? get getWhatIWant {
-
     String? what = get<String>(keyWhatIWant);
-    if(what != null){
+    if (what != null) {
       return what;
     } else {
       return "";
     }
   }
+
   set setWhatIWant(String whatIWant) => set<String>(keyWhatIWant, whatIWant);
 
   String? get getLanguage {
-
     String? language = get<String>(keyLanguage);
-    if(language != null){
+    if (language != null) {
       return language;
     } else {
       return "";
     }
   }
+
   set setLanguage(String language) => set<String>(keyLanguage, language);
 
   String? get getDrinking {
-
     String? drinking = get<String>(keyDrinking);
-    if(drinking != null){
+    if (drinking != null) {
       return drinking;
     } else {
       return "";
     }
   }
+
   set setDrinking(String drinking) => set<String>(keyDrinking, drinking);
 
   String? get getSmoking {
-
     String? smoking = get<String>(keySmoking);
-    if(smoking != null){
+    if (smoking != null) {
       return smoking;
     } else {
       return "";
     }
   }
+
   set setSmoking(String smoking) => set<String>(keySmoking, smoking);
 
   String? get getKids {
-
     String? kids = get<String>(keyKids);
-    if(kids != null){
+    if (kids != null) {
       return kids;
     } else {
       return "";
     }
   }
+
   set setKids(String kids) => set<String>(keyKids, kids);
 
   String? get getLiving {
-
     String? living = get<String>(keyLiving);
-    if(living != null){
+    if (living != null) {
       return living;
     } else {
       return "";
     }
   }
+
   set setLiving(String living) => set<String>(keyLiving, living);
 
   String? get getBodyType {
-
     String? bodyType = get<String>(keyBodyType);
-    if(bodyType != null){
+    if (bodyType != null) {
       return bodyType;
     } else {
       return "";
     }
   }
+
   set setBodyType(String bodyType) => set<String>(keyBodyType, bodyType);
 
   int? get getHeight {
-
     int? height = get<int>(keyHeight);
-    if(height != null){
+    if (height != null) {
       return height;
     } else {
       return 91;
     }
   }
+
   set setHeight(int height) => set<int>(keyHeight, height);
 
   String? get getSexuality {
-
     String? sexuality = get<String>(keySexuality);
-    if(sexuality != null){
+    if (sexuality != null) {
       return sexuality;
     } else {
       return "";
     }
   }
+
   set setSexuality(String sexuality) => set<String>(keySexuality, sexuality);
 
   String? get getRelationship {
-
     String? relationship = get<String>(keyRelationship);
-    if(relationship != null){
+    if (relationship != null) {
       return relationship;
     } else {
       return "";
     }
   }
-  set setRelationship(String relationship) => set<String>(keyRelationship, relationship);
 
+  set setRelationship(String relationship) =>
+      set<String>(keyRelationship, relationship);
 
   String? get getSecondaryPassword => get<String>(keySecondaryPassword);
-  set setSecondaryPassword(String secondaryPassword) => set<String>(keySecondaryPassword, secondaryPassword);
-
+  set setSecondaryPassword(String secondaryPassword) =>
+      set<String>(keySecondaryPassword, secondaryPassword);
 
   List<dynamic>? get getSexualOrientations {
-
     List<dynamic> sexualZero = [SEXUALITY_ASK_ME];
 
-    List<dynamic>? sexualOrientation = get<List<dynamic>>(keySexualOrientations);
-    if(sexualOrientation != null && sexualOrientation.length > 0){
+    List<dynamic>? sexualOrientation =
+        get<List<dynamic>>(keySexualOrientations);
+    if (sexualOrientation != null && sexualOrientation.length > 0) {
       return sexualOrientation;
     } else {
       return sexualZero;
@@ -1028,24 +1078,25 @@ class UserModel extends ParseUser implements ParseCloneable {
   }
 
   List<dynamic>? get getSexualOrientationsReal {
-
     List<dynamic> sexualZero = [];
 
-    List<dynamic>? sexualOrientation = get<List<dynamic>>(keySexualOrientations);
-    if(sexualOrientation != null && sexualOrientation.length > 0){
+    List<dynamic>? sexualOrientation =
+        get<List<dynamic>>(keySexualOrientations);
+    if (sexualOrientation != null && sexualOrientation.length > 0) {
       return sexualOrientation;
     } else {
       return sexualZero;
     }
   }
-  set setSexualOrientations(List<dynamic> sexualOrientations) => set<List<dynamic>>(keySexualOrientations, sexualOrientations);
+
+  set setSexualOrientations(List<dynamic> sexualOrientations) =>
+      set<List<dynamic>>(keySexualOrientations, sexualOrientations);
 
   List<dynamic>? get getPassions {
-
     List<dynamic> passionsZero = ["none"];
 
     List<dynamic>? passions = get<List<dynamic>>(keyPassions);
-    if(passions != null && passions.length > 0){
+    if (passions != null && passions.length > 0) {
       return passions;
     } else {
       return passionsZero;
@@ -1053,78 +1104,81 @@ class UserModel extends ParseUser implements ParseCloneable {
   }
 
   List<dynamic>? get getPassionsRealList {
-
     List<dynamic> passionsZero = [];
 
     List<dynamic>? passions = get<List<dynamic>>(keyPassions);
-    if(passions != null && passions.length > 0){
+    if (passions != null && passions.length > 0) {
       return passions;
     } else {
       return passionsZero;
     }
   }
-  set setPassions(List<dynamic> passions) => set<List<dynamic>>(keyPassions, passions);
 
-  bool? get getShowSexualOrientation => get<bool>(keyShowSexualOrientationInProfile);
-  set setShowSexualOrientation(bool showSexualOrientation) => set<bool>(keyShowSexualOrientationInProfile, showSexualOrientation);
+  set setPassions(List<dynamic> passions) =>
+      set<List<dynamic>>(keyPassions, passions);
+
+  bool? get getShowSexualOrientation =>
+      get<bool>(keyShowSexualOrientationInProfile);
+  set setShowSexualOrientation(bool showSexualOrientation) =>
+      set<bool>(keyShowSexualOrientationInProfile, showSexualOrientation);
 
   bool? get getShowGenderInProfile => get<bool>(keyShowGenderInProfile);
-  set setShowGenderInProfile(bool showGenderInProfile) => set<bool>(keyShowGenderInProfile, showGenderInProfile);
+  set setShowGenderInProfile(bool showGenderInProfile) =>
+      set<bool>(keyShowGenderInProfile, showGenderInProfile);
 
   bool? get getDistanceInMiles {
-
     bool? distanceInMiles = get<bool>(keyDistanceInMiles);
-    if(distanceInMiles != null){
+    if (distanceInMiles != null) {
       return distanceInMiles;
     } else {
       return false;
     }
   }
-  set setDistanceInMiles(bool distanceInMiles) => set<bool>(keyDistanceInMiles, distanceInMiles);
+
+  set setDistanceInMiles(bool distanceInMiles) =>
+      set<bool>(keyDistanceInMiles, distanceInMiles);
 
   bool? get getHideMyLocation {
-
     bool? hideMyLocation = get<bool>(keyHideMyLocation);
-    if(hideMyLocation != null){
+    if (hideMyLocation != null) {
       return hideMyLocation;
     } else {
       return false;
     }
   }
-  set setHideMyLocation(bool hideMyLocation) => set<bool>(keyHideMyLocation, hideMyLocation);
+
+  set setHideMyLocation(bool hideMyLocation) =>
+      set<bool>(keyHideMyLocation, hideMyLocation);
 
   ParseGeoPoint? get getGeoPoint => get<ParseGeoPoint>(keyGeoPoint);
-  set setGeoPoint(ParseGeoPoint geoPoint) => set<ParseGeoPoint>(keyGeoPoint, geoPoint);
+  set setGeoPoint(ParseGeoPoint geoPoint) =>
+      set<ParseGeoPoint>(keyGeoPoint, geoPoint);
 
   int? get getAge => get<int>(keyAge);
   set setAge(int age) => set<int>(keyAge, age);
 
   //List<dynamic>? get getFavoritesUsers => get<List<dynamic>>(keyFavorites);
 
-  List<String>? get getFavoritesUsers{
+  List<String>? get getFavoritesUsers {
+    var arrayString = get<List<dynamic>>(keyFavorites);
 
-    var arrayString =  get<List<dynamic>>(keyFavorites);
-
-    if(arrayString != null){
+    if (arrayString != null) {
       List<String> users = new List<String>.from(arrayString);
       return users;
     } else {
       return [];
     }
-
   }
 
-  List<dynamic>? get getFavoritesUsersQuery{
+  List<dynamic>? get getFavoritesUsersQuery {
+    var arrayString = get<List<dynamic>>(keyFavorites);
 
-    var arrayString =  get<List<dynamic>>(keyFavorites);
-
-    if(arrayString != null){
+    if (arrayString != null) {
       List<String> users = new List<String>.from(arrayString);
       return users;
     } else {
       return [];
     }
-
   }
 
   set setFavoritesUser(UserModel userModel) {
@@ -1142,22 +1196,21 @@ class UserModel extends ParseUser implements ParseCloneable {
     setRemoveAll(keyFavorites, user);
   }
 
-  List<String>? get getRemovedMatch{
-
+  List<String>? get getRemovedMatch {
     var arrayString = get<List<dynamic>>(keyRemovedMatch);
 
-    if(arrayString != null){
+    if (arrayString != null) {
       List<String> users = new List<String>.from(arrayString);
       return users;
-    }else{
+    } else {
       return [];
     }
-
   }
-  set setRemovedMatch(UserModel userModel){
 
+  set setRemovedMatch(UserModel userModel) {
     setAddUnique(keyRemovedMatch, userModel.objectId!);
   }
+
   set unsetRemovedMatch(UserModel userModel) {
     List<String> user = [];
     user.add(userModel.objectId!);
@@ -1167,15 +1220,14 @@ class UserModel extends ParseUser implements ParseCloneable {
   String? get getStripeCustomerId => get<String>(keyStripeCustomerId);
 
   List<PaymentSourceModel>? get getPaymentSources {
-
     var arrayString = get<List<dynamic>>(keyPaymentSource);
 
-    if(arrayString != null){
-      List<PaymentSourceModel> paymentSources = new List<PaymentSourceModel>.from(arrayString);
+    if (arrayString != null) {
+      List<PaymentSourceModel> paymentSources =
+          new List<PaymentSourceModel>.from(arrayString);
       return paymentSources;
-    }else{
+    } else {
       return [];
     }
   }
-
 }

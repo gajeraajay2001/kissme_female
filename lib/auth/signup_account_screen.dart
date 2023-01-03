@@ -518,6 +518,7 @@ class _SignUpAccountScreenState extends State<SignUpAccountScreen> {
     user.setSecondaryPassword = password;
     user.setFirstName = firstName;
     user.setLastName = lastName;
+    user.setOnlineStatus = false;
     user.username =
         username.toLowerCase().trim() + QuickHelp.generateShortUId().toString();
     user.setPhotoVerified = true;
