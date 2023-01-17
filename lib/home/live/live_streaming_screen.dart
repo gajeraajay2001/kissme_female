@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:blur/blur.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart' hide Trans;
 import 'package:heyto/helpers/responsive.dart';
 import 'package:heyto/home/coins/coins_payment_web_widget.dart';
 import 'package:heyto/home/home_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:heyto/services/firebase_services.dart';
 import 'package:heyto/utils/sizeConstant.dart';
 import 'package:lottie/lottie.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -2896,21 +2898,21 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
     UserModel author, {
     GiftsModel? giftsModel,
   }) async {
-    if (messageType == LiveMessagesModel.messageTypeGift) {
-      if (!Responsive.isWebOrDeskTop(context)) {
-        QuickHelp.goBackToPreviousPage(context);
-      }
-
-      widget.currentUser!.removeCredit = giftsModel!.getTickets!;
-      await widget.currentUser!.save();
-
-      widget.mLiveStreamingModel!.addDiamonds =
-          QuickHelp.getDiamondsForReceiver(giftsModel.getTickets!);
-      await widget.mLiveStreamingModel!.save();
-
-      await QuickCloudCode.sendGift(
-          authorId: widget.mUser!.objectId!, credits: giftsModel.getTickets!);
-    }
+    // if (messageType == LiveMessagesModel.messageTypeGift) {
+    //   if (!Responsive.isWebOrDeskTop(context)) {
+    //     QuickHelp.goBackToPreviousPage(context);
+    //   }
+    //
+    //   widget.currentUser!.removeCredit = giftsModel!.getTickets!;
+    //   await widget.currentUser!.save();
+    //
+    //   widget.mLiveStreamingModel!.addDiamonds =
+    //       QuickHelp.getDiamondsForReceiver(giftsModel.getTickets!);
+    //   await widget.mLiveStreamingModel!.save();
+    //
+    //   await QuickCloudCode.sendGift(
+    //       authorId: widget.mUser!.objectId!, credits: giftsModel.getTickets!);
+    // }
 
     LiveMessagesModel liveMessagesModel = new LiveMessagesModel();
     liveMessagesModel.setAuthor = author;
@@ -2933,7 +2935,9 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
 
     liveMessagesModel.setMessage = message;
     liveMessagesModel.setMessageType = messageType;
-    await liveMessagesModel.save();
+    FirebaseService.addChatDataToLiveStreaming(
+        chatId: widget.channelName ?? "", chatData: liveMessagesModel.toJson());
+    // await liveMessagesModel.save();
   }
 
   Widget liveMessages() {
@@ -2991,28 +2995,93 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen>
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            ParseLiveListWidget<LiveMessagesModel>(
-              query: queryBuilder,
-              reverse: true,
-              scrollPhysics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              duration: Duration(microseconds: 500),
-              childBuilder: (BuildContext context,
-                  ParseLiveListElementSnapshot<LiveMessagesModel> snapshot) {
-                if (snapshot.failed) {
-                  return Text('not_connected'.tr());
-                } else if (snapshot.hasData) {
-                  LiveMessagesModel liveMessage = snapshot.loadedData!;
-                  bool isMe =
-                      liveMessage.getAuthorId == widget.currentUser!.objectId &&
-                          liveMessage.getLiveStreaming!.getAuthorId! ==
-                              widget.currentUser!.objectId;
-                  return getMessages(liveMessage, isMe);
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseService.getStreamChatData(
+                  chatId: widget.channelName ?? ""),
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Something went wrong..."),
+                  );
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else {
-                  return Container();
+                  return (snapshot.data!.docs.length > 0)
+                      ? ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                              vertical: MySize.getHeight(20),
+                              horizontal: MySize.getWidth(10)),
+                          itemCount: snapshot.data!.docs.length,
+                          reverse: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> data =
+                                snapshot.data!.docs[index].data()
+                                    as Map<String, dynamic>;
+                            LiveMessagesModel liveMessagesModel =
+                                new LiveMessagesModel();
+
+                            ///Todo parse user model
+                            liveMessagesModel.setAuthor = data["author"];
+                            liveMessagesModel.setAuthorId = data["authorId"];
+
+                            liveMessagesModel.setLiveStreaming =
+                                widget.mLiveStreamingModel!;
+                            liveMessagesModel.setLiveStreamingId =
+                                widget.mLiveStreamingModel!.objectId!;
+
+                            if (data["messageType"] ==
+                                LiveMessagesModel.messageTypeCoHost) {
+                              liveMessagesModel.setCoHostAuthor =
+                                  widget.currentUser!;
+                              liveMessagesModel.setCoHostAuthorUid =
+                                  widget.currentUser!.getUid!;
+                              liveMessagesModel.setCoHostAvailable = false;
+                            }
+
+                            liveMessagesModel.setMessage = data["message"];
+                            liveMessagesModel.setMessageType =
+                                data["messageType"];
+                            // LiveMessagesModel liveMessage = LiveMessagesModel.clone(
+                            //     snapshot.data!.docs[index].data()
+                            //         as Map<String, dynamic>);
+                            bool isMe = liveMessagesModel.getAuthorId ==
+                                    widget.currentUser!.objectId &&
+                                liveMessagesModel
+                                        .getLiveStreaming!.getAuthorId! ==
+                                    widget.currentUser!.objectId;
+                            return getMessages(liveMessagesModel, isMe);
+                          })
+                      : Container();
                 }
               },
             ),
+            // ParseLiveListWidget<LiveMessagesModel>(
+            //   query: queryBuilder,
+            //   reverse: true,
+            //   scrollPhysics: NeverScrollableScrollPhysics(),
+            //   shrinkWrap: true,
+            //   duration: Duration(microseconds: 500),
+            //   childBuilder: (BuildContext context,
+            //       ParseLiveListElementSnapshot<LiveMessagesModel> snapshot) {
+            //     if (snapshot.failed) {
+            //       return Text('not_connected'.tr());
+            //     } else if (snapshot.hasData) {
+            //       LiveMessagesModel liveMessage = snapshot.loadedData!;
+            //       bool isMe =
+            //           liveMessage.getAuthorId == widget.currentUser!.objectId &&
+            //               liveMessage.getLiveStreaming!.getAuthorId! ==
+            //                   widget.currentUser!.objectId;
+            //       return getMessages(liveMessage, isMe);
+            //     } else {
+            //       return Container();
+            //     }
+            //   },
+            // ),
           ],
         ),
       ),

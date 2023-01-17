@@ -27,7 +27,7 @@ dependencies:
   flutter_swipecards: ^0.2.1
 
   flutter_launcher_icons: ^0.9.2
-
+  cloud_firestore:
 
   #Chat
   sticky_grouped_list: ^2.1.0
